@@ -28,6 +28,9 @@ def get_blocks(block_id):
             headers=HEADERS, params=params
         )
         data = r.json()
+        if 'error' in data or r.status_code != 200:
+            print(f'[WARN] Block fetch failed ({block_id}): {data}')
+            break
         blocks.extend(data.get('results', []))
         if data.get('has_more'):
             cursor = data['next_cursor']
@@ -40,7 +43,11 @@ def query_database(db_id):
         f'https://api.notion.com/v1/databases/{db_id}/query',
         headers=HEADERS, json={'page_size': 100}
     )
-    return r.json().get('results', [])
+    data = r.json()
+    if 'error' in data or r.status_code != 200:
+        print(f'[WARN] DB query failed ({db_id}): {data}')
+        return []
+    return data.get('results', [])
 
 def plain(rich_text_list):
     return ''.join(rt.get('plain_text', '') for rt in rich_text_list)
@@ -371,19 +378,22 @@ tr:hover td{{ background:rgba(255,255,255,.02); }}
 def main():
     print('Fetching PROJECT_STATE...')
     blocks = get_blocks(PROJECT_STATE_ID)
+    print(f'  → {len(blocks)} blocks')
 
     print('Querying PJ Status DB...')
     pj = query_database(PJ_STATUS_DB_ID)
+    print(f'  → {len(pj)} records')
 
     print('Querying Pipeline DB...')
     pipeline = query_database(PIPELINE_DB_ID)
+    print(f'  → {len(pipeline)} records')
 
     print('Building HTML...')
     html = build(blocks, pj, pipeline)
 
     with open('index.html', 'w', encoding='utf-8') as f:
         f.write(html)
-    print('Done → index.html')
+    print(f'Done → index.html ({len(html)} bytes)')
 
 if __name__ == '__main__':
     main()
