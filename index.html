@@ -3,158 +3,509 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hiro / Project Dashboard</title>
+<title>Hiro PROJECT Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root {
-  --bg:      #0b0e15;
-  --s1:      #131720;
-  --s2:      #1a2030;
-  --border:  #252d3d;
-  --accent:  #4f9cf9;
-  --purple:  #a78bfa;
-  --warn:    #f59e0b;
-  --danger:  #ef4444;
-  --ok:      #22c55e;
-  --text:    #dde3ee;
-  --muted:   #5a6a82;
-  --dim:     #8a9ab5;
+  --bg:        #f2f4f7;
+  --surface:   #ffffff;
+  --surface2:  #f7f8fa;
+  --border:    #dde1e9;
+  --border2:   #c5cad6;
+  --blue:      #005bac;
+  --blue-light:#deeaf8;
+  --blue-dark: #004080;
+  --orange:    #c45d00;
+  --orange-bg: #fdebd8;
+  --teal:      #006e73;
+  --teal-bg:   #d4f0f1;
+  --green:     #1a6b3a;
+  --green-bg:  #d4edde;
+  --red:       #b91c1c;
+  --red-bg:    #fee2e2;
+  --yellow:    #854d0e;
+  --yellow-bg: #fef9c3;
+  --gray:      #4b5563;
+  --text:      #111827;
+  --text2:     #374151;
+  --muted:     #6b7280;
+  --tag-bg:    #e5e7eb;
+  --prog-bg:   #e5e7eb;
+  --prog-fill: #005bac;
 }
 *{ margin:0; padding:0; box-sizing:border-box; }
-body{
+body {
   background:var(--bg); color:var(--text);
-  font-family:'Noto Sans JP',sans-serif; font-size:13px; line-height:1.65;
+  font-family:'Noto Sans JP',sans-serif; font-size:15px; line-height:1.7;
 }
-header{
-  background:var(--s1); border-bottom:1px solid var(--border);
-  padding:14px 24px; display:flex; align-items:center;
+
+/* ── Header ── */
+header {
+  background:var(--blue); color:#fff;
+  padding:14px 28px; display:flex; align-items:center;
   justify-content:space-between; position:sticky; top:0; z-index:99;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);
 }
-.logo{
-  font-family:'JetBrains Mono',monospace; font-size:12px;
-  font-weight:600; color:var(--accent); letter-spacing:.12em;
+.logo { font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; letter-spacing:.1em; }
+.meta { font-family:'IBM Plex Mono',monospace; font-size:11px; opacity:.8; }
+
+/* ── Nav ── */
+nav {
+  background:var(--blue-dark); padding:0 28px;
+  display:flex; gap:0; overflow-x:auto;
 }
-.meta{
-  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted);
+nav a {
+  color:rgba(255,255,255,.8); text-decoration:none;
+  font-size:12px; font-weight:500; padding:10px 16px;
+  white-space:nowrap; border-bottom:2px solid transparent;
+  transition:.15s;
 }
-.grid{
+nav a:hover { color:#fff; border-color:#fff; }
+
+/* ── Layout ── */
+.grid {
   display:grid; grid-template-columns:1fr 1fr;
-  gap:14px; padding:18px 22px; max-width:1440px; margin:0 auto;
+  gap:18px; padding:22px 26px; max-width:1440px; margin:0 auto;
 }
-.card{
-  background:var(--s1); border:1px solid var(--border);
-  border-radius:10px; padding:18px; overflow:hidden;
+.card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:22px 24px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
 }
-.card.full{ grid-column:1/-1; }
-.card-title{
-  font-family:'JetBrains Mono',monospace; font-size:10.5px;
-  font-weight:600; color:var(--muted); letter-spacing:.14em;
-  text-transform:uppercase; margin-bottom:14px;
-  padding-bottom:10px; border-bottom:1px solid var(--border);
+.card.full { grid-column:1/-1; }
+.card-title {
+  font-size:11px; font-weight:700; color:var(--muted);
+  letter-spacing:.14em; text-transform:uppercase;
+  margin-bottom:16px; padding-bottom:12px;
+  border-bottom:2px solid var(--border);
 }
-/* typography */
-p{ color:var(--dim); margin-bottom:6px; }
-h1,h2,h3{ color:var(--text); margin:10px 0 6px; font-size:14px; }
-ol,ul{ padding-left:18px; }
-ol li,ul li{ margin-bottom:6px; color:var(--dim); }
-ol li strong,ul li strong{ color:var(--text); }
-a{ color:var(--accent); text-decoration:none; }
-a:hover{ text-decoration:underline; }
-code{
-  background:var(--s2); padding:1px 5px; border-radius:3px;
-  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--purple);
+
+/* ── Typography ── */
+p { color:var(--text2); margin-bottom:8px; font-size:15px; }
+h1,h2,h3 { color:var(--text); margin:12px 0 6px; font-size:15px; font-weight:700; }
+ol,ul { padding-left:20px; }
+ol li,ul li { margin-bottom:8px; color:var(--text2); font-size:15px; }
+ol li strong,ul li strong { color:var(--text); font-weight:700; }
+a { color:var(--blue); text-decoration:none; }
+a:hover { text-decoration:underline; }
+code {
+  background:var(--tag-bg); padding:2px 6px; border-radius:4px;
+  font-family:'IBM Plex Mono',monospace; font-size:12px;
 }
-hr{ border:none; border-top:1px solid var(--border); margin:10px 0; }
-blockquote{
-  border-left:2px solid var(--border); padding-left:10px;
-  color:var(--muted); font-size:12px; margin:6px 0;
+hr { border:none; border-top:1px solid var(--border); margin:12px 0; }
+blockquote {
+  border-left:3px solid var(--border2); padding:6px 12px;
+  color:var(--muted); font-size:14px; margin:8px 0;
+  background:var(--surface2); border-radius:0 6px 6px 0;
 }
-.callout{
-  background:var(--s2); border-left:3px solid var(--purple);
-  padding:8px 12px; border-radius:0 6px 6px 0;
-  margin:6px 0; color:var(--dim); font-size:12.5px;
+.callout {
+  background:var(--blue-light); border-left:4px solid var(--blue);
+  padding:10px 14px; border-radius:0 8px 8px 0;
+  margin:8px 0; color:var(--text2); font-size:14px;
 }
-/* table */
-table{ width:100%; border-collapse:collapse; font-size:12.5px; }
-th{
-  background:var(--s2); color:var(--muted); padding:7px 10px;
-  text-align:left; font-weight:500; font-size:11px; white-space:nowrap;
+.empty { color:var(--muted); font-size:14px; }
+
+/* ── Table ── */
+table { width:100%; border-collapse:collapse; font-size:14px; }
+thead { background:var(--surface2); }
+th {
+  padding:10px 12px; text-align:left; font-weight:700;
+  font-size:12px; color:var(--text); border-bottom:2px solid var(--border);
+  white-space:nowrap;
 }
-td{
-  padding:7px 10px; border-bottom:1px solid var(--border);
-  color:var(--dim); vertical-align:top;
+td {
+  padding:10px 12px; border-bottom:1px solid var(--border);
+  color:var(--text2); vertical-align:top; font-size:14px;
 }
-tr:last-child td{ border-bottom:none; }
-tr:hover td{ background:rgba(255,255,255,.02); }
-/* pipeline */
-.pipeline-grid{
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px;
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:var(--surface2); }
+
+/* ── Deadline colors ── */
+.dl-overdue td:first-child { color:var(--red); font-weight:700; }
+.dl-overdue { background:var(--red-bg); }
+.dl-week td:first-child { color:var(--orange); font-weight:700; }
+.dl-week { background:var(--orange-bg); }
+.dl-month td:first-child { color:var(--yellow); font-weight:700; }
+.dl-month { background:var(--yellow-bg); }
+
+/* ── PJ Badge ── */
+.pj-badge {
+  display:inline-block; font-size:11px; font-weight:700;
+  padding:1px 7px; border-radius:20px; margin-right:5px;
+  vertical-align:middle;
 }
-.pipeline-card{
-  background:var(--s2); border:1px solid var(--border);
-  border-radius:7px; padding:12px 14px;
+.tag-meta  { background:#dbeafe; color:#1e40af; }
+.tag-dir   { background:#dcfce7; color:#166534; }
+.tag-sns   { background:#fce7f3; color:#9d174d; }
+.tag-over  { background:#fed7aa; color:#9a3412; }
+.tag-dev   { background:#ede9fe; color:#5b21b6; }
+.tag-cross { background:#e5e7eb; color:#374151; }
+
+/* ── KPI Summary ── */
+.kpi-row-container {
+  display:flex; flex-wrap:wrap; gap:14px; margin-bottom:4px;
 }
-.card-badge{
-  font-size:10px; color:var(--muted); margin-bottom:5px;
-  font-family:'JetBrains Mono',monospace; letter-spacing:.06em;
+.kpi-card {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:10px; padding:18px 20px; min-width:200px; flex:1;
 }
-.pipeline-title{ font-size:13px; font-weight:500; color:var(--text); }
-.empty{ color:var(--muted); font-size:12px; }
-@media(max-width:700px){
-  .grid{ grid-template-columns:1fr; padding:10px; }
-  .card.full{ grid-column:1; }
+.kpi-total {
+  border-color:var(--blue); background:var(--blue-light);
+}
+.kpi-card-name {
+  font-size:12px; font-weight:700; color:var(--muted);
+  letter-spacing:.06em; margin-bottom:8px;
+}
+.kpi-big {
+  font-family:'IBM Plex Mono',monospace; font-size:28px;
+  font-weight:600; color:var(--text); line-height:1.2;
+}
+.kpi-total .kpi-big { color:var(--blue-dark); }
+.kpi-sub { font-size:12px; color:var(--muted); margin-top:2px; }
+.kpi-pct {
+  font-size:13px; font-weight:700; color:var(--blue);
+  margin-top:8px;
+}
+.kpi-ns {
+  margin-top:10px; display:flex; align-items:baseline; gap:8px;
+}
+.kpi-ns-label { font-size:12px; color:var(--muted); }
+.kpi-ns-val {
+  font-family:'IBM Plex Mono',monospace; font-size:18px;
+  font-weight:600; color:var(--text);
+}
+
+/* ── Progress bar ── */
+.prog-bar {
+  background:var(--prog-bg); border-radius:4px;
+  height:6px; margin-top:6px; overflow:hidden;
+}
+.prog-fill {
+  background:var(--prog-fill); height:100%; border-radius:4px;
+  transition:.3s ease;
+}
+
+/* ── PJ Cards ── */
+.pj-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:18px 20px; margin-bottom:14px;
+}
+.pj-card:last-child { margin-bottom:0; }
+.pj-card-head {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  margin-bottom:12px; gap:12px;
+}
+.pj-name {
+  font-size:17px; font-weight:700; color:var(--text);
+  white-space:nowrap;
+}
+.pj-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.status-badge {
+  font-size:12px; font-weight:700; padding:3px 10px;
+  border-radius:20px; white-space:nowrap;
+}
+.status-green  { background:var(--green-bg);  color:var(--green); }
+.status-yellow { background:var(--yellow-bg); color:var(--yellow); }
+.status-orange { background:var(--orange-bg); color:var(--orange); }
+.status-red    { background:var(--red-bg);    color:var(--red); }
+.status-gray   { background:var(--tag-bg);    color:var(--gray); }
+.detail-link { font-size:12px; color:var(--blue); white-space:nowrap; }
+
+.kpi-row {
+  display:flex; align-items:baseline; gap:6px; margin-top:8px;
+}
+.kpi-label { font-size:12px; color:var(--muted); }
+.kpi-val   { font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:600; color:var(--text); }
+.kpi-target{ font-size:12px; color:var(--muted); }
+
+.pj-row {
+  display:grid; grid-template-columns:110px 1fr;
+  gap:8px; padding:8px 0; border-top:1px solid var(--border);
+  font-size:14px;
+}
+.row-label { color:var(--muted); font-size:13px; font-weight:500; padding-top:1px; }
+.row-val   { color:var(--text2); white-space:pre-wrap; word-break:break-word; }
+
+/* ── Pipeline ── */
+.pl-section-label {
+  font-size:12px; font-weight:700; color:var(--muted);
+  letter-spacing:.08em; text-transform:uppercase; margin-bottom:10px;
+}
+.pipeline-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+  gap:12px;
+}
+.pipeline-card {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:8px; padding:14px 16px;
+}
+.pl-status {
+  font-size:11px; font-weight:700; color:var(--orange);
+  background:var(--orange-bg); display:inline-block;
+  padding:2px 8px; border-radius:20px; margin-bottom:7px;
+}
+.pl-title { font-size:14px; font-weight:700; color:var(--text); line-height:1.45; }
+.pl-info  { font-size:12px; color:var(--muted); margin-top:5px; }
+
+/* ── Chart ── */
+.chart-wrap { position:relative; height:220px; }
+
+/* ── Deadline table ── */
+.deadline-table { table-layout:auto; }
+.deadline-table td { word-break:break-word; }
+.deadline-table td:first-child { white-space:nowrap; min-width:70px; }
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .grid { grid-template-columns:1fr; padding:12px; gap:12px; }
+  .card.full { grid-column:1; }
+  body { font-size:14px; }
+  .pj-name { font-size:15px; white-space:normal; }
+  .kpi-big { font-size:22px; }
 }
 </style>
 </head>
 <body>
+
 <header>
-  <div class="logo">⬡ HIRO / PROJECT DASHBOARD</div>
-  <div class="meta">最終更新: 2026-05-10 06:28 UTC</div>
+  <div class="logo">HIRO / PROJECT DASHBOARD</div>
+  <div class="meta">最終更新: 2026-05-10 16:15 JST</div>
 </header>
+
+<nav>
+  <a href="#kpi">KPI</a>
+  <a href="#top5">TOP5</a>
+  <a href="#watch">監視</a>
+  <a href="#deadline">期限</a>
+  <a href="#pjstatus">全PJ</a>
+  <a href="#pipeline">案件</a>
+</nav>
 
 <div class="grid">
 
-  <div class="card">
+  <!-- KPI Summary -->
+  <div class="card full" id="kpi">
+    <div class="card-title">📈 KPI サマリー</div>
+    <div class="kpi-row-container"><div class="kpi-card">
+          <div class="kpi-card-name">① メタ</div>
+          
+          
+          
+          <div class='kpi-ns'><span class='kpi-ns-label'>月次レビュー実施数</span><span class='kpi-ns-val'>—</span></div>
+        </div><div class="kpi-card">
+          <div class="kpi-card-name">② ディレクターK・案件受注</div>
+          
+          <div class='kpi-sub'>目標 ¥500,000</div>
+          
+          <div class='kpi-ns'><span class='kpi-ns-label'>直接営業_送信数</span><span class='kpi-ns-val'>—</span></div>
+        </div><div class="kpi-card">
+          <div class="kpi-card-name">③ SNS発信・コンテンツ</div>
+          
+          
+          
+          <div class='kpi-ns'><span class='kpi-ns-label'>月間問い合わせ数</span><span class='kpi-ns-val'>—</span></div>
+        </div></div>
+  </div>
+
+  <!-- Chart -->
+  <div class="card full" id="chart">
+    <div class="card-title">📊 月収益グラフ（実績 vs 目標）</div>
+    <div class="chart-wrap"><canvas id="revChart"></canvas></div>
+  </div>
+
+  <!-- TOP5 -->
+  <div class="card" id="top5">
     <div class="card-title">🎯 今日 / 今週 TOP5</div>
     <blockquote>緊急度・重要度の上位5項目（自分のアクション・実行系）</blockquote><ol><li><strong>【②】IT補助金 6/15締切実務</strong>: GBIZIDプライム取得 + SECURITY ACTION宣言 + UA支援申込書記入</li><li><strong>【②】ブランド方向性 初動着手項目</strong>(5/8-5/12期限): Notion公開ページ作成・4/16動画編集・専門エージェント登録(レバテック/Webist/Midworks)</li><li><strong>【③】Phase 0 TODO</strong>: noteエクスポート・既存アカウント削除・AIアバター生成(Microsoft Designer等)・ブランドバナー作成(Canva)・プロフィール文最終確定</li><li><strong>【②】応募中案件の反応確認</strong>: CW 13104574(5/11締切)・完全燃焼ダイエット(5/15締切)・イノーバ反応待ち</li><li><strong>【横】①メタ申し送り反映</strong>: layer1呼称ルール更新(ディレクターK→Hiro.K) + PROJECT_STATE/layer1_v3反映 + ②受注時呼称統一議論</li></ol><hr>
   </div>
 
-  <div class="card">
-    <div class="card-title">⚠️ 監視 · 連絡待ち</div>
+  <!-- 監視 -->
+  <div class="card" id="watch">
+    <div class="card-title">⚠️ 監視・連絡待ち</div>
     <blockquote>待機系・自分のアクション不要・先方反応や時期到来を待つ</blockquote><ul><li>持続化補助金 採択結果待ち(4/24送信済・未通知)</li><li>CW-2026-05-No.1 先方からの初動待ち(ChatWork招待・NDA案・次回MTG・契約締結前)</li><li>イノーバ・スカウト返信済 → 先方判断待ち</li><li>note記事再開待ち(編集設計書完成後)</li><li>月次同期2026/6/1反映: <a href="http://xn--cbkye9a6nt29kuf3buwpu44a7xb.md/" target="_blank">確認済みスキル一覧.md</a>「6本→5本」修正・layer1_v3 §5.1 morning_report記述削除・09_<a href="http://v2.md/" target="_blank">v2.md</a> → Project Knowledge配置・失敗カルテ #12-#14反映</li><li><strong>HTMLダッシュボード化議題(次セッション再開)</strong>: 5/9決定「α案(Notionビュー強化)」見直し提起・要件は「自動更新+URL一発+1画面俯瞰」・新規ツール導入の是非も含めて再相談</li></ul><hr>
   </div>
 
-  <div class="card full">
-    <div class="card-title">📅 期限あり項目</div>
-    <blockquote>期日順・実行アクションはTOP5側に記載</blockquote><table><tr><th>期日</th><th>項目</th></tr><tr><td>5/11</td><td>CW 13104574 応募締切(B応募送信済・反応待ち)</td></tr><tr><td>5/12</td><td>②ブランド方向性 初動着手期限(5/8-5/12内)</td></tr><tr><td>5/15</td><td>応募-2026-05-01(完全燃焼ダイエット)締切</td></tr><tr><td>5月中</td><td>①メタ PJダッシュボードシート設計(スプレ v6)</td></tr><tr><td>5月末</td><td>①メタ初の月次レビュー実施</td></tr><tr><td>6/1</td><td>月次同期(失敗カルテ #12-#14反映・確認済みスキル一覧修正・layer1_v3修正・09_<a href="http://v2.md/" target="_blank">v2.md</a> PK配置)</td></tr><tr><td>6/15</td><td>IT補助金 2次締切(本命)</td></tr></table><hr>
+  <!-- 期限 -->
+  <div class="card full" id="deadline">
+    <div class="card-title">📅 期限あり項目
+      <span style="font-size:11px;font-weight:400;margin-left:10px;">
+        <span style="color:#b91c1c">■</span>過去  
+        <span style="color:#c45d00">■</span>今週  
+        <span style="color:#854d0e">■</span>今月
+      </span>
+    </div>
+    <blockquote>期日順・実行アクションはTOP5側に記載</blockquote><table class="deadline-table"><thead><tr><th>期日</th><th>項目</th></tr></thead><tbody><tr class=""><td>5/11</td><td>CW 13104574 応募締切(B応募送信済・反応待ち)</td></tr><tr class=""><td>5/12</td><td><span class="pj-badge tag-dir">②</span>ブランド方向性 初動着手期限(5/8-5/12内)</td></tr><tr class=""><td>5/15</td><td>応募-2026-05-01(完全燃焼ダイエット)締切</td></tr><tr class=""><td>5月中</td><td><span class="pj-badge tag-meta">①</span>メタ PJダッシュボードシート設計(スプレ v6)</td></tr><tr class=""><td>5月末</td><td><span class="pj-badge tag-meta">①</span>メタ初の月次レビュー実施</td></tr><tr class=""><td>6/1</td><td>月次同期(失敗カルテ #12-#14反映・確認済みスキル一覧修正・layer1_v3修正・09_<a href="http://v2.md/" target="_blank">v2.md</a> PK配置)</td></tr><tr class=""><td>6/15</td><td>IT補助金 2次締切(本命)</td></tr></tbody></table><hr>
   </div>
 
-  <div class="card full">
-    <div class="card-title">📊 全PJステータス</div>
-    <table><thead><tr><th>PJ名</th><th>最終更新日</th><th>詳細リンク</th><th>主要メトリクス</th><th>次フェーズ・次にやること</th><th>現フェーズ</th><th>課題・リスク</th><th>並び順</th><th>状態</th></tr></thead><tbody><tr><td>⑤ 個人開発</td><td></td><td></td><td>tomatick.app(AdSense不合格・記事数10本未達)・スクリプト商品化検討。直近進捗なし。</td><td>tomatick記事10本達成→AdSense再申請。スクリプト商品化は②受注・③SNS発信の進捗を見て判断(現状は低優先)</td><td>tomatick市場検証 + スクリプト商品化(休止級・ひろさんスコープ外)。</td><td>着手保留・①メタ月次レビュー時に進捗確認のみ。着手判定基準は01_メタ_役割再定義仕様書_v2 §6。</td><td>5</td><td>🔄リセット中</td></tr><tr><td>③ SNS発信・コンテンツ</td><td>2026-05-08</td><td><a href="https://www.notion.so/35a31e4fdf10813989fdf82e8fe3e05d" target="_blank">リンク</a></td><td>発信戦略確定済（5/8）・全 13論点クローズ・ブランド「Hiro.K | 業務改善×AI実装伴走」確定・市場調査出典付き・LinkedIn日本33%増(2022→2024)</td><td>Phase 0 TODO 5項目完了→Phase 1始動（②ブランド方向性確定後のタイミング）。Phase 1立ち上げ時にAI支援プロンプトテンプレートv1・KPI集計・撤退基準判定/機会コストROI計算スクリプト実装。</td><td>Phase 0 TODO進行中（ひろさん側）。ブランド方針と読者ペルソナ確定済・実装待ち。</td><td>ひろさん側手動作業5項目未完(noteエクスポート/旧アカウント削除/AIアバター生成/ブランドバナー/プロフィール文最終確定)</td><td>3</td><td>🔄リセット中</td></tr><tr><td>① メタ</td><td>2026-05-09</td><td><a href="https://www.notion.so/5a8b3457a23746559e29a241cd805a11" target="_blank">リンク</a></td><td>①メタ議論ログDB蓄積中（5/2以降）・失敗カルテ追記キュー#5〜#13・恍久防御策遨5件運用中</td><td>(1)5月末初回月次レビュー実施 (2)2026/7月次レビューで四半期AIツールupdate初回実施 (3)月次同期(2026/6/1)で1月6月5本Knowledge反映</td><td>運用基盤整備中。今日(5/9)はCodex運用確定+全PJダッシュボード設計セッション。自動化スクリプト全削除完了(5/9 続3セッション)。</td><td>失敗カルテ追記キュー#12 #13をNotion原本へ追記要。月次同期(2026/6/1)でProject Knowledge反映予定。</td><td>1</td><td>🟢実行モード</td></tr><tr><td>② ディレクターK・案件受注</td><td>2026-05-09</td><td><a href="https://www.notion.so/a25b228ca90e41e587a48d2627256262" target="_blank">リンク</a></td><td>受注済 2件(LU-2026-04 / CW-2026-05-No.1)・応募中 3件(応募-01/03/07)・月収益目標¥500,000・現状¥240,000ペース(CW-No.1受注適用時)</td><td>(1)【最優先】5/8〜初動着手：Notion公開ページ作成・4/16動画編集・専門エージェント登録(レバテック/Webist/Midworks) (2)IT補助金: GBIZID取得/SECURITY ACTION宣言/UA支援申込書記入 (3)応募中3件反応確認 (4)CW-No.1契約締結・実務開始</td><td>ブランド方向性v1初動着手(α主軸/BtoB SaaS・Web/DX/広告マーケ)・CW-2026-05-No.1採用合意・契約締結前。IT補助金6/15 2次締切UA本命ルート。</td><td>CW-No.1 契約締結前・ChatWork招待・NDA案送付・次回MTG日程未定。ライトアップ社検収未返答。</td><td>2</td><td>🟢実行モード</td></tr><tr><td>④ 海外販売</td><td></td><td></td><td>Etsy: ショップHiroDigitalTools(N1・N2 2点出品中)・レビュー0・もで接進中。直近進捗なし。</td><td>既存2点リニューアル。ちなみに、コンテンツ拡張はひろさんと③SNS発信・②受注の進捗を見て判断(現状は低優先)</td><td>Etsy市場検証フェーズ(休止級・ひろさんスコープ外)。</td><td>着手保留・①メタ月次レビュー時に進捗確認のみ。着手判定基準は01_メタ_役割再定義仕様書_v2 §6。</td><td>4</td><td>🔄リセット中</td></tr></tbody></table>
+  <!-- 全PJ -->
+  <div class="card full" id="pjstatus">
+    <div class="card-title">📋 全PJステータス</div>
+    
+        <div class="pj-card">
+          <div class="pj-card-head">
+            <div class="pj-name">① メタ</div>
+            <div class="pj-right">
+              <span class="status-badge status-green">🟢実行モード</span>
+              <a href="https://www.notion.so/5a8b3457a23746559e29a241cd805a11" target="_blank" class="detail-link">詳細 →</a>
+            </div>
+          </div>
+          
+          <div class="kpi-row"><span class="kpi-label">月次レビュー実施数</span><span class="kpi-val">—</span></div>
+          <div class="pj-row"><span class="row-label">主要メトリクス</span><span class="row-val">①メタ議論ログDB蓄積中（5/2以降）・失敗カルテ追記キュー#5〜#13・恍久防御策遨5件運用中</span></div>
+          <div class="pj-row"><span class="row-label">次にやること</span><span class="row-val">(1)5月末初回月次レビュー実施 (2)2026/7月次レビューで四半期AIツールupdate初回実施 (3)月次同期(2026/6/1)で1月6月5本Knowledge反映</span></div>
+          <div class="pj-row"><span class="row-label">現フェーズ</span><span class="row-val">運用基盤整備中。今日(5/9)はCodex運用確定+全PJダッシュボード設計セッション。自動化スクリプト全削除完了(5/9 続3セッション)。</span></div>
+          <div class="pj-row"><span class="row-label">課題・リスク</span><span class="row-val">失敗カルテ追記キュー#12 #13をNotion原本へ追記要。月次同期(2026/6/1)でProject Knowledge反映予定。</span></div>
+        </div>
+        <div class="pj-card">
+          <div class="pj-card-head">
+            <div class="pj-name">② ディレクターK・案件受注</div>
+            <div class="pj-right">
+              <span class="status-badge status-green">🟢実行モード</span>
+              <a href="https://www.notion.so/a25b228ca90e41e587a48d2627256262" target="_blank" class="detail-link">詳細 →</a>
+            </div>
+          </div>
+          
+          <div class="kpi-row"><span class="kpi-label">直接営業_送信数</span><span class="kpi-val">—</span></div>
+          <div class="pj-row"><span class="row-label">主要メトリクス</span><span class="row-val">受注済 2件(LU-2026-04 / CW-2026-05-No.1)・応募中 3件(応募-01/03/07)・月収益目標¥500,000・現状¥240,000ペース(CW-No.1受注適用時)</span></div>
+          <div class="pj-row"><span class="row-label">次にやること</span><span class="row-val">(1)【最優先】5/8〜初動着手：Notion公開ページ作成・4/16動画編集・専門エージェント登録(レバテック/Webist/Midworks) (2)IT補助金: GBIZID取得/SECURITY ACTION宣言/UA支援申込書記入 (3)応募中3件反応確認 (4)CW-No.1契約締結・実務開始</span></div>
+          <div class="pj-row"><span class="row-label">現フェーズ</span><span class="row-val">ブランド方向性v1初動着手(α主軸/BtoB SaaS・Web/DX/広告マーケ)・CW-2026-05-No.1採用合意・契約締結前。IT補助金6/15 2次締切UA本命ルート。</span></div>
+          <div class="pj-row"><span class="row-label">課題・リスク</span><span class="row-val">CW-No.1 契約締結前・ChatWork招待・NDA案送付・次回MTG日程未定。ライトアップ社検収未返答。</span></div>
+        </div>
+        <div class="pj-card">
+          <div class="pj-card-head">
+            <div class="pj-name">③ SNS発信・コンテンツ</div>
+            <div class="pj-right">
+              <span class="status-badge status-yellow">🔄リセット中</span>
+              <a href="https://www.notion.so/35a31e4fdf10813989fdf82e8fe3e05d" target="_blank" class="detail-link">詳細 →</a>
+            </div>
+          </div>
+          
+          <div class="kpi-row"><span class="kpi-label">月間問い合わせ数</span><span class="kpi-val">—</span></div>
+          <div class="pj-row"><span class="row-label">主要メトリクス</span><span class="row-val">発信戦略確定済（5/8）・全 13論点クローズ・ブランド「Hiro.K | 業務改善×AI実装伴走」確定・市場調査出典付き・LinkedIn日本33%増(2022→2024)</span></div>
+          <div class="pj-row"><span class="row-label">次にやること</span><span class="row-val">Phase 0 TODO 5項目完了→Phase 1始動（②ブランド方向性確定後のタイミング）。Phase 1立ち上げ時にAI支援プロンプトテンプレートv1・KPI集計・撤退基準判定/機会コストROI計算スクリプト実装。</span></div>
+          <div class="pj-row"><span class="row-label">現フェーズ</span><span class="row-val">Phase 0 TODO進行中（ひろさん側）。ブランド方針と読者ペルソナ確定済・実装待ち。</span></div>
+          <div class="pj-row"><span class="row-label">課題・リスク</span><span class="row-val">ひろさん側手動作業5項目未完(noteエクスポート/旧アカウント削除/AIアバター生成/ブランドバナー/プロフィール文最終確定)</span></div>
+        </div>
+        <div class="pj-card">
+          <div class="pj-card-head">
+            <div class="pj-name">④ 海外販売</div>
+            <div class="pj-right">
+              <span class="status-badge status-yellow">🔄リセット中</span>
+              
+            </div>
+          </div>
+          
+          
+          <div class="pj-row"><span class="row-label">主要メトリクス</span><span class="row-val">Etsy: ショップHiroDigitalTools(N1・N2 2点出品中)・レビュー0・もで接進中。直近進捗なし。</span></div>
+          <div class="pj-row"><span class="row-label">次にやること</span><span class="row-val">既存2点リニューアル。ちなみに、コンテンツ拡張はひろさんと③SNS発信・②受注の進捗を見て判断(現状は低優先)</span></div>
+          <div class="pj-row"><span class="row-label">現フェーズ</span><span class="row-val">Etsy市場検証フェーズ(休止級・ひろさんスコープ外)。</span></div>
+          <div class="pj-row"><span class="row-label">課題・リスク</span><span class="row-val">着手保留・①メタ月次レビュー時に進捗確認のみ。着手判定基準は01_メタ_役割再定義仕様書_v2 §6。</span></div>
+        </div>
+        <div class="pj-card">
+          <div class="pj-card-head">
+            <div class="pj-name">⑤ 個人開発</div>
+            <div class="pj-right">
+              <span class="status-badge status-yellow">🔄リセット中</span>
+              
+            </div>
+          </div>
+          
+          
+          <div class="pj-row"><span class="row-label">主要メトリクス</span><span class="row-val">tomatick.app(AdSense不合格・記事数10本未達)・スクリプト商品化検討。直近進捗なし。</span></div>
+          <div class="pj-row"><span class="row-label">次にやること</span><span class="row-val">tomatick記事10本達成→AdSense再申請。スクリプト商品化は②受注・③SNS発信の進捗を見て判断(現状は低優先)</span></div>
+          <div class="pj-row"><span class="row-label">現フェーズ</span><span class="row-val">tomatick市場検証 + スクリプト商品化(休止級・ひろさんスコープ外)。</span></div>
+          <div class="pj-row"><span class="row-label">課題・リスク</span><span class="row-val">着手保留・①メタ月次レビュー時に進捗確認のみ。着手判定基準は01_メタ_役割再定義仕様書_v2 §6。</span></div>
+        </div>
   </div>
 
-  <div class="card full">
+  <!-- 案件パイプライン -->
+  <div class="card full" id="pipeline">
     <div class="card-title">② 案件パイプライン</div>
-    <div class="pipeline-grid"><div class="pipeline-card">
-            <div class="card-badge">検収待ち</div>
-            <div class="pipeline-title">ライトアップ社・動画講師トライアル</div>
+    <div class="pl-section-label">受注済み · 稼働中</div><div class="pipeline-grid"><div class="pipeline-card">
+          <div class="pl-status">検収待ち</div>
+          <div class="pl-title">ライトアップ社・動画講師トライアル</div>
+          <div class='pl-info'>CrowdWorks</div>
         </div><div class="pipeline-card">
-            <div class="card-badge">応募中</div>
-            <div class="pipeline-title">【AI活用エンジニア募集】Claude Code/Notion/Geminiでの業務自動化・品質向上を支えてくれる方</div>
+          <div class="pl-status">採用</div>
+          <div class="pl-title">AI業務自動化・Notion構築伴走(時給制長期)</div>
+          <div class='pl-info'>ChatWork · 時給3,000〜4,000円(月額固定15万〜)</div>
+        </div></div><div class="pl-section-label" style="margin-top:16px">応募中 · 選考中</div><div class="pipeline-grid"><div class="pipeline-card">
+          <div class="pl-status">応募中</div>
+          <div class="pl-title">【AI活用エンジニア募集】Claude Code/Notion/Geminiでの業務自動化・品質向上を支えてくれる方</div>
+          <div class='pl-info'>CrowdWorks · 3,000円〜4,000円</div>
         </div><div class="pipeline-card">
-            <div class="card-badge">反応あり</div>
-            <div class="pipeline-title">【Claude Code活用】AIによるマーケ・営業の業務改善(設計〜実装まで一気通貫)支援メンバー募集</div>
+          <div class="pl-status">反応あり</div>
+          <div class="pl-title">【Claude Code活用】AIによるマーケ・営業の業務改善(設計〜実装まで一気通貫)支援メンバー募集</div>
+          <div class='pl-info'>スカウト · 要相談(時給3,000〜5,000円レンジで応答)</div>
         </div><div class="pipeline-card">
-            <div class="card-badge">採用</div>
-            <div class="pipeline-title">AI業務自動化・Notion構築伴走(時給制長期)</div>
-        </div><div class="pipeline-card">
-            <div class="card-badge">応募中</div>
-            <div class="pipeline-title">業務効率化×自動化｜仕組みを作るAIコンサルタント募集</div>
+          <div class="pl-status">応募中</div>
+          <div class="pl-title">業務効率化×自動化｜仕組みを作るAIコンサルタント募集</div>
+          <div class='pl-info'>CrowdWorks · 時給3,000〜5,000円</div>
         </div></div>
   </div>
 
 </div>
+
+<script>
+(function(){
+  var d = {"labels": ["\u2461 \u30c7\u30a3\u30ec\u30af\u30bf\u30fcK\u30fb\u6848\u4ef6\u53d7\u6ce8"], "actuals": [0], "targets": [500000]};
+  if(!d.labels.length) return;
+  var ctx = document.getElementById('revChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: d.labels,
+      datasets: [
+        {
+          label: '実績 (¥)',
+          data: d.actuals,
+          backgroundColor: 'rgba(0,91,172,0.75)',
+          borderRadius: 5,
+        },
+        {
+          label: '目標 (¥)',
+          data: d.targets,
+          backgroundColor: 'rgba(196,93,0,0.35)',
+          borderColor: 'rgba(196,93,0,0.8)',
+          borderWidth: 2,
+          borderRadius: 5,
+          type: 'bar',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position:'top', labels:{ font:{size:13}, color:'#374151' } },
+        tooltip: {
+          callbacks: {
+            label: function(ctx){
+              return ctx.dataset.label + ': ¥' + ctx.parsed.y.toLocaleString();
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function(v){ return '¥' + v.toLocaleString(); },
+            color: '#6b7280', font:{size:12}
+          },
+          grid: { color:'#dde1e9' }
+        },
+        x: {
+          ticks: { color:'#374151', font:{size:13} },
+          grid: { display:false }
+        }
+      }
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
