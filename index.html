@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hiro / Project Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0b0e15;
+  --s1:      #131720;
+  --s2:      #1a2030;
+  --border:  #252d3d;
+  --accent:  #4f9cf9;
+  --purple:  #a78bfa;
+  --warn:    #f59e0b;
+  --danger:  #ef4444;
+  --ok:      #22c55e;
+  --text:    #dde3ee;
+  --muted:   #5a6a82;
+  --dim:     #8a9ab5;
+}
+*{ margin:0; padding:0; box-sizing:border-box; }
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'Noto Sans JP',sans-serif; font-size:13px; line-height:1.65;
+}
+header{
+  background:var(--s1); border-bottom:1px solid var(--border);
+  padding:14px 24px; display:flex; align-items:center;
+  justify-content:space-between; position:sticky; top:0; z-index:99;
+}
+.logo{
+  font-family:'JetBrains Mono',monospace; font-size:12px;
+  font-weight:600; color:var(--accent); letter-spacing:.12em;
+}
+.meta{
+  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted);
+}
+.grid{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:14px; padding:18px 22px; max-width:1440px; margin:0 auto;
+}
+.card{
+  background:var(--s1); border:1px solid var(--border);
+  border-radius:10px; padding:18px; overflow:hidden;
+}
+.card.full{ grid-column:1/-1; }
+.card-title{
+  font-family:'JetBrains Mono',monospace; font-size:10.5px;
+  font-weight:600; color:var(--muted); letter-spacing:.14em;
+  text-transform:uppercase; margin-bottom:14px;
+  padding-bottom:10px; border-bottom:1px solid var(--border);
+}
+/* typography */
+p{ color:var(--dim); margin-bottom:6px; }
+h1,h2,h3{ color:var(--text); margin:10px 0 6px; font-size:14px; }
+ol,ul{ padding-left:18px; }
+ol li,ul li{ margin-bottom:6px; color:var(--dim); }
+ol li strong,ul li strong{ color:var(--text); }
+a{ color:var(--accent); text-decoration:none; }
+a:hover{ text-decoration:underline; }
+code{
+  background:var(--s2); padding:1px 5px; border-radius:3px;
+  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--purple);
+}
+hr{ border:none; border-top:1px solid var(--border); margin:10px 0; }
+blockquote{
+  border-left:2px solid var(--border); padding-left:10px;
+  color:var(--muted); font-size:12px; margin:6px 0;
+}
+.callout{
+  background:var(--s2); border-left:3px solid var(--purple);
+  padding:8px 12px; border-radius:0 6px 6px 0;
+  margin:6px 0; color:var(--dim); font-size:12.5px;
+}
+/* table */
+table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+th{
+  background:var(--s2); color:var(--muted); padding:7px 10px;
+  text-align:left; font-weight:500; font-size:11px; white-space:nowrap;
+}
+td{
+  padding:7px 10px; border-bottom:1px solid var(--border);
+  color:var(--dim); vertical-align:top;
+}
+tr:last-child td{ border-bottom:none; }
+tr:hover td{ background:rgba(255,255,255,.02); }
+/* pipeline */
+.pipeline-grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px;
+}
+.pipeline-card{
+  background:var(--s2); border:1px solid var(--border);
+  border-radius:7px; padding:12px 14px;
+}
+.card-badge{
+  font-size:10px; color:var(--muted); margin-bottom:5px;
+  font-family:'JetBrains Mono',monospace; letter-spacing:.06em;
+}
+.pipeline-title{ font-size:13px; font-weight:500; color:var(--text); }
+.empty{ color:var(--muted); font-size:12px; }
+@media(max-width:700px){
+  .grid{ grid-template-columns:1fr; padding:10px; }
+  .card.full{ grid-column:1; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">⬡ HIRO / PROJECT DASHBOARD</div>
+  <div class="meta">最終更新: 2026-05-10 06:18 UTC</div>
+</header>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="card-title">🎯 今日 / 今週 TOP5</div>
+    <blockquote>緊急度・重要度の上位5項目（自分のアクション・実行系）</blockquote><ol><li><strong>【②】IT補助金 6/15締切実務</strong>: GBIZIDプライム取得 + SECURITY ACTION宣言 + UA支援申込書記入</li><li><strong>【②】ブランド方向性 初動着手項目</strong>(5/8-5/12期限): Notion公開ページ作成・4/16動画編集・専門エージェント登録(レバテック/Webist/Midworks)</li><li><strong>【③】Phase 0 TODO</strong>: noteエクスポート・既存アカウント削除・AIアバター生成(Microsoft Designer等)・ブランドバナー作成(Canva)・プロフィール文最終確定</li><li><strong>【②】応募中案件の反応確認</strong>: CW 13104574(5/11締切)・完全燃焼ダイエット(5/15締切)・イノーバ反応待ち</li><li><strong>【横】①メタ申し送り反映</strong>: layer1呼称ルール更新(ディレクターK→Hiro.K) + PROJECT_STATE/layer1_v3反映 + ②受注時呼称統一議論</li></ol><hr>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚠️ 監視 · 連絡待ち</div>
+    <blockquote>待機系・自分のアクション不要・先方反応や時期到来を待つ</blockquote><ul><li>持続化補助金 採択結果待ち(4/24送信済・未通知)</li><li>CW-2026-05-No.1 先方からの初動待ち(ChatWork招待・NDA案・次回MTG・契約締結前)</li><li>イノーバ・スカウト返信済 → 先方判断待ち</li><li>note記事再開待ち(編集設計書完成後)</li><li>月次同期2026/6/1反映: <a href="http://xn--cbkye9a6nt29kuf3buwpu44a7xb.md/" target="_blank">確認済みスキル一覧.md</a>「6本→5本」修正・layer1_v3 §5.1 morning_report記述削除・09_<a href="http://v2.md/" target="_blank">v2.md</a> → Project Knowledge配置・失敗カルテ #12-#14反映</li><li><strong>HTMLダッシュボード化議題(次セッション再開)</strong>: 5/9決定「α案(Notionビュー強化)」見直し提起・要件は「自動更新+URL一発+1画面俯瞰」・新規ツール導入の是非も含めて再相談</li></ul><hr>
+  </div>
+
+  <div class="card full">
+    <div class="card-title">📅 期限あり項目</div>
+    <blockquote>期日順・実行アクションはTOP5側に記載</blockquote><table><tr><th>期日</th><th>項目</th></tr><tr><td>5/11</td><td>CW 13104574 応募締切(B応募送信済・反応待ち)</td></tr><tr><td>5/12</td><td>②ブランド方向性 初動着手期限(5/8-5/12内)</td></tr><tr><td>5/15</td><td>応募-2026-05-01(完全燃焼ダイエット)締切</td></tr><tr><td>5月中</td><td>①メタ PJダッシュボードシート設計(スプレ v6)</td></tr><tr><td>5月末</td><td>①メタ初の月次レビュー実施</td></tr><tr><td>6/1</td><td>月次同期(失敗カルテ #12-#14反映・確認済みスキル一覧修正・layer1_v3修正・09_<a href="http://v2.md/" target="_blank">v2.md</a> PK配置)</td></tr><tr><td>6/15</td><td>IT補助金 2次締切(本命)</td></tr></table><hr>
+  </div>
+
+  <div class="card full">
+    <div class="card-title">📊 全PJステータス</div>
+    <table><thead><tr><th>PJ名</th><th>最終更新日</th><th>詳細リンク</th><th>主要メトリクス</th><th>次フェーズ・次にやること</th><th>現フェーズ</th><th>課題・リスク</th><th>並び順</th><th>状態</th></tr></thead><tbody><tr><td>⑤ 個人開発</td><td></td><td></td><td>tomatick.app(AdSense不合格・記事数10本未達)・スクリプト商品化検討。直近進捗なし。</td><td>tomatick記事10本達成→AdSense再申請。スクリプト商品化は②受注・③SNS発信の進捗を見て判断(現状は低優先)</td><td>tomatick市場検証 + スクリプト商品化(休止級・ひろさんスコープ外)。</td><td>着手保留・①メタ月次レビュー時に進捗確認のみ。着手判定基準は01_メタ_役割再定義仕様書_v2 §6。</td><td>5</td><td>🔄リセット中</td></tr><tr><td>③ SNS発信・コンテンツ</td><td>2026-05-08</td><td><a href="https://www.notion.so/35a31e4fdf10813989fdf82e8fe3e05d" target="_blank">リンク</a></td><td>発信戦略確定済（5/8）・全 13論点クローズ・ブランド「Hiro.K | 業務改善×AI実装伴走」確定・市場調査出典付き・LinkedIn日本33%増(2022→2024)</td><td>Phase 0 TODO 5項目完了→Phase 1始動（②ブランド方向性確定後のタイミング）。Phase 1立ち上げ時にAI支援プロンプトテンプレートv1・KPI集計・撤退基準判定/機会コストROI計算スクリプト実装。</td><td>Phase 0 TODO進行中（ひろさん側）。ブランド方針と読者ペルソナ確定済・実装待ち。</td><td>ひろさん側手動作業5項目未完(noteエクスポート/旧アカウント削除/AIアバター生成/ブランドバナー/プロフィール文最終確定)</td><td>3</td><td>🔄リセット中</td></tr><tr><td>① メタ</td><td>2026-05-09</td><td><a href="https://www.notion.so/5a8b3457a23746559e29a241cd805a11" target="_blank">リンク</a></td><td>①メタ議論ログDB蓄積中（5/2以降）・失敗カルテ追記キュー#5〜#13・恍久防御策遨5件運用中</td><td>(1)5月末初回月次レビュー実施 (2)2026/7月次レビューで四半期AIツールupdate初回実施 (3)月次同期(2026/6/1)で1月6月5本Knowledge反映</td><td>運用基盤整備中。今日(5/9)はCodex運用確定+全PJダッシュボード設計セッション。自動化スクリプト全削除完了(5/9 続3セッション)。</td><td>失敗カルテ追記キュー#12 #13をNotion原本へ追記要。月次同期(2026/6/1)でProject Knowledge反映予定。</td><td>1</td><td>🟢実行モード</td></tr><tr><td>② ディレクターK・案件受注</td><td>2026-05-09</td><td><a href="https://www.notion.so/a25b228ca90e41e587a48d2627256262" target="_blank">リンク</a></td><td>受注済 2件(LU-2026-04 / CW-2026-05-No.1)・応募中 3件(応募-01/03/07)・月収益目標¥500,000・現状¥240,000ペース(CW-No.1受注適用時)</td><td>(1)【最優先】5/8〜初動着手：Notion公開ページ作成・4/16動画編集・専門エージェント登録(レバテック/Webist/Midworks) (2)IT補助金: GBIZID取得/SECURITY ACTION宣言/UA支援申込書記入 (3)応募中3件反応確認 (4)CW-No.1契約締結・実務開始</td><td>ブランド方向性v1初動着手(α主軸/BtoB SaaS・Web/DX/広告マーケ)・CW-2026-05-No.1採用合意・契約締結前。IT補助金6/15 2次締切UA本命ルート。</td><td>CW-No.1 契約締結前・ChatWork招待・NDA案送付・次回MTG日程未定。ライトアップ社検収未返答。</td><td>2</td><td>🟢実行モード</td></tr><tr><td>④ 海外販売</td><td></td><td></td><td>Etsy: ショップHiroDigitalTools(N1・N2 2点出品中)・レビュー0・もで接進中。直近進捗なし。</td><td>既存2点リニューアル。ちなみに、コンテンツ拡張はひろさんと③SNS発信・②受注の進捗を見て判断(現状は低優先)</td><td>Etsy市場検証フェーズ(休止級・ひろさんスコープ外)。</td><td>着手保留・①メタ月次レビュー時に進捗確認のみ。着手判定基準は01_メタ_役割再定義仕様書_v2 §6。</td><td>4</td><td>🔄リセット中</td></tr></tbody></table>
+  </div>
+
+  <div class="card full">
+    <div class="card-title">② 案件パイプライン</div>
+    <div class="pipeline-grid"><div class="pipeline-card">
+            <div class="card-badge">検収待ち</div>
+            <div class="pipeline-title">ライトアップ社・動画講師トライアル</div>
+        </div><div class="pipeline-card">
+            <div class="card-badge">応募中</div>
+            <div class="pipeline-title">【AI活用エンジニア募集】Claude Code/Notion/Geminiでの業務自動化・品質向上を支えてくれる方</div>
+        </div><div class="pipeline-card">
+            <div class="card-badge">反応あり</div>
+            <div class="pipeline-title">【Claude Code活用】AIによるマーケ・営業の業務改善(設計〜実装まで一気通貫)支援メンバー募集</div>
+        </div><div class="pipeline-card">
+            <div class="card-badge">採用</div>
+            <div class="pipeline-title">AI業務自動化・Notion構築伴走(時給制長期)</div>
+        </div><div class="pipeline-card">
+            <div class="card-badge">応募中</div>
+            <div class="pipeline-title">業務効率化×自動化｜仕組みを作るAIコンサルタント募集</div>
+        </div></div>
+  </div>
+
+</div>
+</body>
+</html>
