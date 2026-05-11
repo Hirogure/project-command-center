@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>④ 海外販売 | Hiro PROJECT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #f2f4f7;
+  --surface:   #ffffff;
+  --surface2:  #f7f8fa;
+  --border:    #dde1e9;
+  --border2:   #c5cad6;
+  --blue:      #005bac;
+  --blue-light:#deeaf8;
+  --blue-dark: #004080;
+  --orange:    #c45d00;
+  --orange-bg: #fdebd8;
+  --teal:      #006e73;
+  --teal-bg:   #d4f0f1;
+  --green:     #1a6b3a;
+  --green-bg:  #d4edde;
+  --red:       #b91c1c;
+  --red-bg:    #fee2e2;
+  --yellow:    #854d0e;
+  --yellow-bg: #fef9c3;
+  --gray:      #4b5563;
+  --text:      #111827;
+  --text2:     #374151;
+  --muted:     #6b7280;
+  --tag-bg:    #e5e7eb;
+  --prog-bg:   #e5e7eb;
+  --prog-fill: #005bac;
+}
+*{ margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:var(--bg); color:var(--text);
+  font-family:'Noto Sans JP',sans-serif; font-size:15px; line-height:1.7;
+}
+
+/* ── Header ── */
+header {
+  background:var(--blue); color:#fff;
+  padding:14px 28px; display:flex; align-items:center;
+  justify-content:space-between; position:sticky; top:0; z-index:99;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);
+}
+.logo { font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; letter-spacing:.1em; }
+.meta { font-family:'IBM Plex Mono',monospace; font-size:11px; opacity:.8; }
+
+/* ── Nav ── */
+nav {
+  background:var(--blue-dark); padding:0 28px;
+  display:flex; gap:0; overflow-x:auto;
+}
+nav a {
+  color:rgba(255,255,255,.8); text-decoration:none;
+  font-size:12px; font-weight:500; padding:10px 16px;
+  white-space:nowrap; border-bottom:2px solid transparent;
+  transition:.15s;
+}
+nav a:hover { color:#fff; border-color:#fff; }
+nav a.active { color:#fff; border-color:#fff; }
+
+/* ── Layout ── */
+.grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:18px; padding:22px 26px; max-width:1440px; margin:0 auto;
+}
+.card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:22px 24px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.card.full { grid-column:1/-1; }
+.card-title {
+  font-size:11px; font-weight:700; color:var(--muted);
+  letter-spacing:.14em; text-transform:uppercase;
+  margin-bottom:16px; padding-bottom:12px;
+  border-bottom:2px solid var(--border);
+}
+
+/* ── Typography ── */
+p { color:var(--text2); margin-bottom:8px; font-size:15px; }
+h1,h2,h3 { color:var(--text); margin:12px 0 6px; font-size:15px; font-weight:700; }
+ol,ul { padding-left:20px; }
+ol li,ul li { margin-bottom:8px; color:var(--text2); font-size:15px; }
+ol li strong,ul li strong { color:var(--text); font-weight:700; }
+a { color:var(--blue); text-decoration:none; }
+a:hover { text-decoration:underline; }
+code {
+  background:var(--tag-bg); padding:2px 6px; border-radius:4px;
+  font-family:'IBM Plex Mono',monospace; font-size:12px;
+}
+hr { border:none; border-top:1px solid var(--border); margin:12px 0; }
+blockquote {
+  border-left:3px solid var(--border2); padding:6px 12px;
+  color:var(--muted); font-size:14px; margin:8px 0;
+  background:var(--surface2); border-radius:0 6px 6px 0;
+}
+.callout {
+  background:var(--blue-light); border-left:4px solid var(--blue);
+  padding:10px 14px; border-radius:0 8px 8px 0;
+  margin:8px 0; color:var(--text2); font-size:14px;
+}
+.empty { color:var(--muted); font-size:14px; }
+
+/* ── Table ── */
+table { width:100%; border-collapse:collapse; font-size:14px; }
+thead { background:var(--surface2); }
+th {
+  padding:10px 12px; text-align:left; font-weight:700;
+  font-size:12px; color:var(--text); border-bottom:2px solid var(--border);
+  white-space:nowrap;
+}
+td {
+  padding:10px 12px; border-bottom:1px solid var(--border);
+  color:var(--text2); vertical-align:top; font-size:14px;
+}
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:var(--surface2); }
+
+/* ── Deadline colors ── */
+.dl-overdue td:first-child { color:var(--red); font-weight:700; }
+.dl-overdue { background:var(--red-bg); }
+.dl-week td:first-child { color:var(--orange); font-weight:700; }
+.dl-week { background:var(--orange-bg); }
+.dl-month td:first-child { color:var(--yellow); font-weight:700; }
+.dl-month { background:var(--yellow-bg); }
+
+/* ── PJ Badge ── */
+.pj-badge {
+  display:inline-block; font-size:11px; font-weight:700;
+  padding:1px 7px; border-radius:20px; margin-right:5px;
+  vertical-align:middle;
+}
+.tag-meta  { background:#dbeafe; color:#1e40af; }
+.tag-dir   { background:#dcfce7; color:#166534; }
+.tag-sns   { background:#fce7f3; color:#9d174d; }
+.tag-over  { background:#fed7aa; color:#9a3412; }
+.tag-dev   { background:#ede9fe; color:#5b21b6; }
+.tag-cross { background:#e5e7eb; color:#374151; }
+
+/* ── KPI Summary ── */
+.kpi-row-container {
+  display:flex; flex-wrap:wrap; gap:14px; margin-bottom:4px;
+}
+.kpi-card {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:10px; padding:18px 20px; min-width:200px; flex:1;
+}
+.kpi-total {
+  border-color:var(--blue); background:var(--blue-light);
+}
+.kpi-card-name {
+  font-size:12px; font-weight:700; color:var(--muted);
+  letter-spacing:.06em; margin-bottom:8px;
+}
+.kpi-big {
+  font-family:'IBM Plex Mono',monospace; font-size:28px;
+  font-weight:600; color:var(--text); line-height:1.2;
+}
+.kpi-total .kpi-big { color:var(--blue-dark); }
+.kpi-sub { font-size:12px; color:var(--muted); margin-top:2px; }
+.kpi-pct {
+  font-size:13px; font-weight:700; color:var(--blue);
+  margin-top:8px;
+}
+.kpi-ns {
+  margin-top:10px; display:flex; align-items:baseline; gap:8px;
+}
+.kpi-ns-label { font-size:12px; color:var(--muted); }
+.kpi-ns-val {
+  font-family:'IBM Plex Mono',monospace; font-size:18px;
+  font-weight:600; color:var(--text);
+}
+
+/* ── Progress bar ── */
+.prog-bar {
+  background:var(--prog-bg); border-radius:4px;
+  height:6px; margin-top:6px; overflow:hidden;
+}
+.prog-fill {
+  background:var(--prog-fill); height:100%; border-radius:4px;
+  transition:.3s ease;
+}
+
+/* ── PJ Cards ── */
+.pj-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:18px 20px; margin-bottom:14px;
+}
+.pj-card:last-child { margin-bottom:0; }
+.pj-card-head {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  margin-bottom:12px; gap:12px;
+}
+.pj-name {
+  font-size:17px; font-weight:700; color:var(--text);
+  white-space:nowrap;
+}
+.pj-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.status-badge {
+  font-size:12px; font-weight:700; padding:3px 10px;
+  border-radius:20px; white-space:nowrap;
+}
+.status-green  { background:var(--green-bg);  color:var(--green); }
+.status-yellow { background:var(--yellow-bg); color:var(--yellow); }
+.status-orange { background:var(--orange-bg); color:var(--orange); }
+.status-red    { background:var(--red-bg);    color:var(--red); }
+.status-gray   { background:var(--tag-bg);    color:var(--gray); }
+.detail-link { font-size:12px; color:var(--blue); white-space:nowrap; }
+
+.kpi-row {
+  display:flex; align-items:baseline; gap:6px; margin-top:8px;
+}
+.kpi-label { font-size:12px; color:var(--muted); }
+.kpi-val   { font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:600; color:var(--text); }
+.kpi-target{ font-size:12px; color:var(--muted); }
+
+.pj-row {
+  display:grid; grid-template-columns:110px 1fr;
+  gap:8px; padding:8px 0; border-top:1px solid var(--border);
+  font-size:14px;
+}
+.row-label { color:var(--muted); font-size:13px; font-weight:500; padding-top:1px; }
+.row-val   { color:var(--text2); white-space:pre-wrap; word-break:break-word; }
+
+/* ── Pipeline ── */
+.pl-section-label {
+  font-size:12px; font-weight:700; color:var(--muted);
+  letter-spacing:.08em; text-transform:uppercase; margin-bottom:10px;
+}
+.pipeline-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+  gap:12px;
+}
+.pipeline-card {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:8px; padding:14px 16px;
+}
+.pl-status {
+  font-size:11px; font-weight:700; color:var(--orange);
+  background:var(--orange-bg); display:inline-block;
+  padding:2px 8px; border-radius:20px; margin-bottom:7px;
+}
+.pl-title { font-size:14px; font-weight:700; color:var(--text); line-height:1.45; }
+.pl-info  { font-size:12px; color:var(--muted); margin-top:5px; }
+
+/* ── Chart ── */
+.chart-wrap { position:relative; height:220px; }
+
+/* ── Deadline table ── */
+.deadline-table { table-layout:auto; }
+.deadline-table td { word-break:break-word; }
+.deadline-table td:first-child { white-space:nowrap; min-width:70px; }
+
+/* ── Detail page: KPI placeholder (Phase待ち) ── */
+.kpi-placeholder-grid {
+  display:flex; flex-wrap:wrap; gap:12px; margin-top:4px;
+}
+.kpi-placeholder-item {
+  background:var(--surface2); border:1px dashed var(--border2);
+  border-radius:10px; padding:16px 18px; min-width:180px; flex:1;
+  opacity:.5;
+}
+.kpi-placeholder-item .kpi-card-name { margin-bottom:6px; }
+.kpi-placeholder-val {
+  font-family:'IBM Plex Mono',monospace; font-size:22px;
+  font-weight:600; color:var(--muted); letter-spacing:.05em;
+}
+
+/* ── Detail page: Phase status block ── */
+.phase-block {
+  display:flex; align-items:center; gap:14px;
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:10px; padding:16px 20px; margin-bottom:4px;
+}
+.phase-badge-lg {
+  font-size:13px; font-weight:700; padding:5px 14px;
+  border-radius:20px; white-space:nowrap; flex-shrink:0;
+}
+.phase-desc { font-size:14px; color:var(--text2); }
+
+/* ── Detail page: todo list ── */
+.todo-list { list-style:none; padding:0; margin:0; }
+.todo-list li {
+  display:flex; align-items:flex-start; gap:10px;
+  padding:9px 0; border-bottom:1px solid var(--border);
+  font-size:14px; color:var(--text2);
+}
+.todo-list li:last-child { border-bottom:none; }
+.todo-check {
+  font-size:15px; flex-shrink:0; margin-top:1px;
+}
+.todo-done-text { color:var(--muted); text-decoration:line-through; }
+
+/* ── Skeleton page ── */
+.skeleton-wrap {
+  max-width:640px; margin:80px auto; text-align:center; padding:0 24px;
+}
+.skeleton-icon { font-size:56px; margin-bottom:20px; }
+.skeleton-title {
+  font-family:'IBM Plex Mono',monospace; font-size:22px;
+  font-weight:600; color:var(--text); margin-bottom:12px;
+}
+.skeleton-sub { font-size:15px; color:var(--muted); line-height:1.8; }
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .grid { grid-template-columns:1fr; padding:12px; gap:12px; }
+  .card.full { grid-column:1; }
+  body { font-size:14px; }
+  .pj-name { font-size:15px; white-space:normal; }
+  .kpi-big { font-size:22px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">HIRO / ④ 海外販売</div>
+  <div class="meta">最終更新: 2026-05-12 01:28 JST</div>
+</header>
+
+<nav><a href="index.html">← ダッシュボード</a><a href="pj2.html">② ディレクターK</a><a href="pj3.html">③ SNS発信</a><a href="pj4.html" class="active">④ 海外販売</a><a href="pj5.html">⑤ 個人開発</a></nav>
+
+<div class="skeleton-wrap">
+  <div class="skeleton-icon">🚧</div>
+  <div class="skeleton-title">④ 海外販売</div>
+  <div class="skeleton-sub">
+    このプロジェクトのKPI設計は現在進行中です。<br>
+    実行モード移行後に詳細ページを整備予定です。
+  </div>
+</div>
+
+</body>
+</html>

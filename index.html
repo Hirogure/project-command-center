@@ -63,6 +63,7 @@ nav a {
   transition:.15s;
 }
 nav a:hover { color:#fff; border-color:#fff; }
+nav a.active { color:#fff; border-color:#fff; }
 
 /* ── Layout ── */
 .grid {
@@ -257,6 +258,57 @@ tr:hover td { background:var(--surface2); }
 .deadline-table td { word-break:break-word; }
 .deadline-table td:first-child { white-space:nowrap; min-width:70px; }
 
+/* ── Detail page: KPI placeholder (Phase待ち) ── */
+.kpi-placeholder-grid {
+  display:flex; flex-wrap:wrap; gap:12px; margin-top:4px;
+}
+.kpi-placeholder-item {
+  background:var(--surface2); border:1px dashed var(--border2);
+  border-radius:10px; padding:16px 18px; min-width:180px; flex:1;
+  opacity:.5;
+}
+.kpi-placeholder-item .kpi-card-name { margin-bottom:6px; }
+.kpi-placeholder-val {
+  font-family:'IBM Plex Mono',monospace; font-size:22px;
+  font-weight:600; color:var(--muted); letter-spacing:.05em;
+}
+
+/* ── Detail page: Phase status block ── */
+.phase-block {
+  display:flex; align-items:center; gap:14px;
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:10px; padding:16px 20px; margin-bottom:4px;
+}
+.phase-badge-lg {
+  font-size:13px; font-weight:700; padding:5px 14px;
+  border-radius:20px; white-space:nowrap; flex-shrink:0;
+}
+.phase-desc { font-size:14px; color:var(--text2); }
+
+/* ── Detail page: todo list ── */
+.todo-list { list-style:none; padding:0; margin:0; }
+.todo-list li {
+  display:flex; align-items:flex-start; gap:10px;
+  padding:9px 0; border-bottom:1px solid var(--border);
+  font-size:14px; color:var(--text2);
+}
+.todo-list li:last-child { border-bottom:none; }
+.todo-check {
+  font-size:15px; flex-shrink:0; margin-top:1px;
+}
+.todo-done-text { color:var(--muted); text-decoration:line-through; }
+
+/* ── Skeleton page ── */
+.skeleton-wrap {
+  max-width:640px; margin:80px auto; text-align:center; padding:0 24px;
+}
+.skeleton-icon { font-size:56px; margin-bottom:20px; }
+.skeleton-title {
+  font-family:'IBM Plex Mono',monospace; font-size:22px;
+  font-weight:600; color:var(--text); margin-bottom:12px;
+}
+.skeleton-sub { font-size:15px; color:var(--muted); line-height:1.8; }
+
 /* ── Responsive ── */
 @media(max-width:768px){
   .grid { grid-template-columns:1fr; padding:12px; gap:12px; }
@@ -271,7 +323,7 @@ tr:hover td { background:var(--surface2); }
 
 <header>
   <div class="logo">HIRO / PROJECT DASHBOARD</div>
-  <div class="meta">最終更新: 2026-05-12 01:14 JST</div>
+  <div class="meta">最終更新: 2026-05-12 01:28 JST</div>
 </header>
 
 <nav>
@@ -318,7 +370,7 @@ tr:hover td { background:var(--surface2); }
   <!-- TOP5 -->
   <div class="card" id="top5">
     <div class="card-title">🎯 今日 / 今週 TOP5</div>
-    <blockquote>緊急度・重要度の上位5項目（自分のアクション・実行系）</blockquote><ol><li><strong>【②】IT補助金 6/15締切実務</strong>: GBIZIDプライム取得 + SECURITY ACTION宣言 + UA支援申込書記入</li><li><strong>【②】ブランド方向性 初動着手項目</strong>(5/8-5/12期限): Notion公開ページ作成・4/16動画編集・専門エージェント登録(レバテック/Webist/Midworks)</li><li>✅<strong>【③】新アカウント開設・バナー設置完了</strong>(2026/5/11): note=<a href="https://note.com/hiro_k_web_ai" target="_blank">https://note.com/hiro_k_web_ai</a> / X=<a href="https://x.com/k_hiro_web_ai" target="_blank">https://x.com/k_hiro_web_ai</a> / LinkedIn=<a href="https://www.linkedin.com/in/hiro-k-27ba19409/" target="_blank">https://www.linkedin.com/in/hiro-k-27ba19409/</a> → 次: 初回投稿企画</li><li><strong>【②】応募中案件の反応確認</strong>: CW 13104574(5/11締切・アクション不要)・完全燃焼ダイエット(5/15締切・アクション不要)</li></ol><hr>
+    <blockquote>緊急度・重要度の上位5項目（自分のアクション・実行系）</blockquote><ol><li><strong>【②】IT補助金 6/15締切実務</strong>: GBIZIDプライム取得 + SECURITY ACTION宣言 + UA支援申込書記入</li><li><strong>【②】ブランド方向性 初動着手項目</strong>(5/8-5/12期限): Notion公開ページ作成・4/16動画編集・専門エージェント登録(レバテック/Webist/Midworks)</li><li>✅<strong>【③】W1投稿4本完了</strong>(2026/5/11): LinkedIn①・X①・note①・X②note告知公開済・XBio更新済 → 次: LinkedIn②(今週後半)・W2ドラフト作成</li><li><strong>【②】応募中案件の反応確認</strong>: CW 13104574(5/11締切・アクション不要)・完全燃焼ダイエット(5/15締切・アクション不要)</li></ol><hr>
   </div>
 
   <!-- 監視 -->
@@ -363,7 +415,7 @@ tr:hover td { background:var(--surface2); }
             <div class="pj-name">② ディレクターK・案件受注</div>
             <div class="pj-right">
               <span class="status-badge status-green">🟢実行モード</span>
-              <a href="https://www.notion.so/a25b228ca90e41e587a48d2627256262" target="_blank" class="detail-link">詳細 →</a>
+              <a href="pj2.html" class="detail-link">詳細 →</a>
             </div>
           </div>
           
@@ -378,7 +430,7 @@ tr:hover td { background:var(--surface2); }
             <div class="pj-name">③ SNS発信・コンテンツ</div>
             <div class="pj-right">
               <span class="status-badge status-yellow">🔄リセット中</span>
-              <a href="https://www.notion.so/35a31e4fdf10813989fdf82e8fe3e05d" target="_blank" class="detail-link">詳細 →</a>
+              <a href="pj3.html" class="detail-link">詳細 →</a>
             </div>
           </div>
           
@@ -393,7 +445,7 @@ tr:hover td { background:var(--surface2); }
             <div class="pj-name">④ 海外販売</div>
             <div class="pj-right">
               <span class="status-badge status-yellow">🔄リセット中</span>
-              
+              <a href="pj4.html" class="detail-link">詳細 →</a>
             </div>
           </div>
           
@@ -408,7 +460,7 @@ tr:hover td { background:var(--surface2); }
             <div class="pj-name">⑤ 個人開発</div>
             <div class="pj-right">
               <span class="status-badge status-yellow">🔄リセット中</span>
-              
+              <a href="pj5.html" class="detail-link">詳細 →</a>
             </div>
           </div>
           
