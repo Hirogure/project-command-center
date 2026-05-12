@@ -802,6 +802,11 @@ def build(all_blocks, pj_records, pipeline_records):
   <a href="#deadline">期限</a>
   <a href="#pjstatus">全PJ</a>
   <a href="#pipeline">案件</a>
+  <span style="color:rgba(255,255,255,.3);padding:0 4px">|</span>
+  <a href="pj2.html">② ディレクターK</a>
+  <a href="pj3.html">③ SNS発信</a>
+  <a href="pj4.html">④ 海外販売</a>
+  <a href="pj5.html">⑤ 個人開発</a>
 </nav>
 
 <div class="grid">
