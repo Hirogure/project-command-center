@@ -2,7 +2,7 @@ name: Update Dashboard
 
 on:
   schedule:
-    - cron: '*/30 * * * *'   # 30分ごと（UTC基準）
+    - cron: '*/5 * * * *'   # 5分ごと（UTC基準）
   workflow_dispatch:           # 手動実行も可能
 
 permissions:
