@@ -431,7 +431,7 @@ def _fonts():
 
 def _index_nav():
     return '''<nav>
-  <a href="#kpi">KPI</a><a href="#top5">TOP5</a><a href="#watch">監視</a>
+  <a href="#kpi">KPI</a><a href="#top5">TOP5</a><a href="#waiting">連絡待ち</a><a href="#watch">監視</a>
   <a href="#deadline">期限</a><a href="#pjstatus">全PJ</a><a href="#pipeline">案件</a>
   <span class="nav-sep">|</span>
   <a href="pj2.html">② ディレクターK</a>
@@ -485,8 +485,9 @@ def _error_page(label, nav_key, now):
 
 def build(all_blocks, pj_records, pipeline_records):
     top5_h  = blocks_to_html(get_section(all_blocks,'TOP5'))
-    watch_h = blocks_to_html(get_section(all_blocks,'監視'), pj_tag=True)
-    dl_h    = render_deadline(get_section(all_blocks,'期限'))
+    waiting_h = blocks_to_html(get_section(all_blocks,'連絡待ち'), pj_tag=True)
+    watch_h   = blocks_to_html(get_section(all_blocks,'監視'), pj_tag=True)
+    dl_h      = render_deadline(get_section(all_blocks,'期限'))
     kpi_h   = render_kpi_summary(pj_records)
     pj_h    = render_pj_cards(pj_records)
     pipe_h  = render_pipeline(pipeline_records)
@@ -504,7 +505,8 @@ def build(all_blocks, pj_records, pipeline_records):
   <div class="card full" id="kpi"><div class="card-title">📈 KPI サマリー</div><div class="kpi-row-container">{kpi_h}</div></div>
   <div class="card full" id="chart"><div class="card-title">📊 月収益グラフ（実績 vs 目標）</div><div class="chart-wrap"><canvas id="revChart"></canvas></div></div>
   <div class="card" id="top5"><div class="card-title">🎯 今日 / 今週 TOP5</div>{top5_h or '<p class="empty">データなし</p>'}</div>
-  <div class="card" id="watch"><div class="card-title">⚠️ 監視・連絡待ち</div>{watch_h or '<p class="empty">データなし</p>'}</div>
+  <div class="card" id="waiting"><div class="card-title">📬 連絡待ち</div>{waiting_h or '<p class="empty">なし</p>'}</div>
+  <div class="card" id="watch"><div class="card-title">⚠️ 監視（継続追跡）</div>{watch_h or '<p class="empty">データなし</p>'}</div>
   <div class="card full" id="deadline"><div class="card-title">📅 期限あり項目 <span style="font-size:11px;font-weight:400;margin-left:10px;"><span style="color:#b91c1c">■</span>過去 <span style="color:#c45d00">■</span>今週 <span style="color:#854d0e">■</span>今月</span></div>{dl_h or '<p class="empty">データなし</p>'}</div>
   <div class="card full" id="pjstatus"><div class="card-title">📋 全PJステータス</div>{pj_h}</div>
   <div class="card full" id="pipeline"><div class="card-title">② 案件パイプライン</div>{pipe_h}</div>
