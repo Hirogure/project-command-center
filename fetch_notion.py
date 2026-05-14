@@ -439,7 +439,7 @@ def _index_nav():
   <a href="pj3.html">③ SNS発信</a>
   <a href="pj4.html">④ 海外販売</a>
   <a href="pj5.html">⑤ 個人開発</a>
-  <a href="pj6.html">⑥ 小型ツール</a>
+  <a href="commitcraft_strategy.html">⑥ 小型ツール</a>
 </nav>'''
 
 def _detail_nav(active=''):
