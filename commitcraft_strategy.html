@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マイクロSaaS戦略資料 — CommitCraft & 30ツール</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080C10;
+    --bg2: #0E1318;
+    --bg3: #141A22;
+    --border: #1E2830;
+    --border2: #2A3540;
+    --text: #E8EDF2;
+    --text2: #8A9BAA;
+    --text3: #4A5A68;
+    --accent: #3B82F6;
+    --accent2: #10B981;
+    --accent3: #F59E0B;
+    --accent4: #EF4444;
+    --accent5: #8B5CF6;
+    --font-sans: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+    --font-serif: 'Instrument Serif', serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    background: rgba(8,12,16,0.92);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+  .logo {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text2);
+    letter-spacing: 0.08em;
+  }
+  .logo span { color: var(--accent); }
+  nav { display: flex; gap: 4px; }
+  .nav-btn {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all .15s;
+    background: transparent;
+    color: var(--text2);
+  }
+  .nav-btn:hover { background: var(--bg3); color: var(--text); }
+  .nav-btn.active { background: var(--bg3); color: var(--text); border: 1px solid var(--border2); }
+
+  /* LAYOUT */
+  .page { display: none; }
+  .page.active { display: block; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 48px 40px; }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 64px 40px 48px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #0A1020 0%, var(--bg) 100%);
+  }
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero-title {
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 4vw, 48px);
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .hero-title em { font-style: italic; color: var(--accent); }
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text2);
+    max-width: 520px;
+    margin: 0 auto 32px;
+  }
+  .stat-row {
+    display: flex;
+    gap: 1px;
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .stat {
+    flex: 1;
+    background: var(--bg2);
+    padding: 16px 20px;
+    text-align: center;
+  }
+  .stat-n { font-size: 22px; font-weight: 600; color: var(--text); }
+  .stat-l { font-size: 11px; color: var(--text3); margin-top: 2px; letter-spacing: 0.04em; }
+
+  /* SECTION */
+  .section { margin-bottom: 56px; }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  /* FILTER */
+  .filters {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .filter-btn {
+    font-size: 12px;
+    padding: 5px 12px;
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text2);
+    transition: all .15s;
+    font-family: var(--font-sans);
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* TOOL GRID */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 8px;
+  }
+  .tool-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .tool-card:hover { border-color: var(--border2); background: var(--bg3); }
+  .tool-card.open { border-color: var(--accent); }
+  .tool-head { display: flex; align-items: flex-start; gap: 10px; }
+  .tool-num { font-family: var(--font-mono); font-size: 11px; color: var(--text3); min-width: 20px; padding-top: 2px; }
+  .tool-body2 { flex: 1; min-width: 0; }
+  .tool-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; margin-bottom: 6px; }
+  .tool-what { font-size: 12px; color: var(--text2); line-height: 1.55; }
+  .cat-tag {
+    font-size: 10px; padding: 2px 8px; border-radius: 10px;
+    white-space: nowrap; flex-shrink: 0; font-weight: 500;
+  }
+  .tool-detail {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .tool-card.open .tool-detail { display: block; }
+  .detail-row {
+    display: flex; gap: 8px; margin-bottom: 5px;
+    font-size: 11px; align-items: flex-start;
+  }
+  .detail-lbl { color: var(--text3); min-width: 64px; flex-shrink: 0; padding-top: 1px; }
+  .detail-val { color: var(--text2); line-height: 1.5; }
+  .price-tag { font-weight: 600; color: var(--accent2); }
+
+  /* ROADMAP */
+  .roadmap-hero {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+  }
+  .rh-title { font-family: var(--font-serif); font-size: 22px; color: var(--text); margin-bottom: 16px; }
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 0;
+  }
+  .sc {
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+  }
+  .sc-t { font-size: 11px; font-weight: 500; margin-bottom: 4px; }
+  .sc-n { font-size: 22px; font-weight: 600; }
+  .sc-d { font-size: 11px; line-height: 1.5; margin-top: 6px; }
+  .sc.base { background: var(--bg3); }
+  .sc.real { background: #1A1500; border-color: #3A2F00; }
+  .sc.real .sc-t, .sc.real .sc-n { color: var(--accent3); }
+  .sc.real .sc-d { color: #8A7040; }
+  .sc.opt { background: #0A1A12; border-color: #0D3020; }
+  .sc.opt .sc-t, .sc.opt .sc-n { color: var(--accent2); }
+  .sc.opt .sc-d { color: #3A7050; }
+
+  /* PHASE */
+  .phases { display: grid; gap: 12px; margin-bottom: 32px; }
+  .phase {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .phase-header:hover { background: var(--bg3); }
+  .phase-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600;
+    flex-shrink: 0;
+  }
+  .phase-title { font-size: 15px; font-weight: 500; flex: 1; }
+  .phase-target {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 10px;
+  }
+  .phase-arrow { color: var(--text3); transition: transform .2s; }
+  .phase.open .phase-arrow { transform: rotate(180deg); }
+  .phase-body { display: none; padding: 0 20px 20px; }
+  .phase.open .phase-body { display: block; }
+  .week-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .week {
+    background: var(--bg3);
+    border-radius: 8px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+  }
+  .week-title { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+  .week-items { font-size: 11px; color: var(--text2); line-height: 1.7; }
+  .week-items span { display: block; padding-left: 12px; position: relative; }
+  .week-items span::before { content: '—'; position: absolute; left: 0; color: var(--text3); }
+
+  /* PLATFORM */
+  .platform-cards { display: grid; gap: 8px; }
+  .plat {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+  }
+  .plat.recommend { border-color: var(--accent); }
+  .plat.warn { border-color: #2A1A1A; background: #0E0A0A; }
+  .plat-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .plat-name { font-size: 14px; font-weight: 500; }
+  .plat-badge {
+    font-size: 10px; padding: 2px 8px;
+    border-radius: 10px; margin-left: auto;
+  }
+  .badge-rec { background: rgba(59,130,246,0.15); color: var(--accent); }
+  .badge-ok { background: rgba(16,185,129,0.15); color: var(--accent2); }
+  .badge-ng { background: rgba(239,68,68,0.15); color: var(--accent4); }
+  .plat-row { display: flex; gap: 8px; margin-bottom: 4px; font-size: 12px; }
+  .plat-lbl { color: var(--text3); min-width: 64px; flex-shrink: 0; }
+  .plat-val { color: var(--text2); line-height: 1.5; }
+
+  /* CHANNEL */
+  .channel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .ch-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .ch-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+  .ch-body { font-size: 12px; color: var(--text2); line-height: 1.65; }
+
+  /* FUNNEL */
+  .funnel { display: grid; gap: 6px; margin-bottom: 24px; }
+  .funnel-row { display: flex; align-items: center; gap: 10px; }
+  .funnel-lbl { font-size: 11px; color: var(--text2); min-width: 140px; }
+  .funnel-wrap { flex: 1; background: var(--bg3); border-radius: 4px; height: 26px; overflow: hidden; }
+  .funnel-bar {
+    height: 100%; display: flex; align-items: center;
+    padding-left: 10px; font-size: 11px; font-weight: 500;
+    border-radius: 4px; white-space: nowrap;
+  }
+  .funnel-val { font-size: 11px; color: var(--text3); min-width: 80px; text-align: right; }
+
+  /* RETENTION */
+  .ret-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .ret-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .ret-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+  .ret-body { font-size: 12px; color: var(--text2); line-height: 1.65; }
+
+  /* CHURN */
+  .churn-grid { display: grid; gap: 6px; margin-bottom: 24px; }
+  .churn-row { display: flex; align-items: center; gap: 10px; }
+  .churn-lbl { font-size: 11px; color: var(--text2); min-width: 100px; }
+  .churn-wrap { flex: 1; background: var(--bg3); border-radius: 4px; height: 24px; overflow: hidden; }
+  .churn-bar { height: 100%; display: flex; align-items: center; padding-left: 10px; font-size: 11px; font-weight: 500; border-radius: 4px; }
+
+  /* NEXT ACTIONS */
+  .action-list { display: grid; gap: 8px; }
+  .action {
+    display: flex; align-items: flex-start; gap: 14px;
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px;
+  }
+  .action-num {
+    width: 24px; height: 24px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600;
+    flex-shrink: 0; color: #fff;
+  }
+  .action-content { flex: 1; }
+  .action-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .action-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
+  .action-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text3); margin-top: 6px; }
+
+  /* TABS for roadmap */
+  .rtabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+  .rtab {
+    font-size: 13px; padding: 8px 16px;
+    border: none; background: transparent;
+    color: var(--text2); cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px; transition: all .15s;
+    font-family: var(--font-sans);
+  }
+  .rtab:hover { color: var(--text); }
+  .rtab.active { color: var(--text); border-bottom-color: var(--accent); }
+  .rpane { display: none; }
+  .rpane.active { display: block; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 40px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text3);
+    font-family: var(--font-mono);
+  }
+
+  @media (max-width: 768px) {
+    header { padding: 0 16px; }
+    .container { padding: 32px 16px; }
+    .hero { padding: 48px 16px 32px; }
+    .week-grid { grid-template-columns: 1fr; }
+    .channel-grid { grid-template-columns: 1fr; }
+    .ret-grid { grid-template-columns: 1fr; }
+    .scenario-grid { grid-template-columns: 1fr; }
+    .stat-row { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">director<span>K</span> / micro-saas</div>
+  <nav>
+    <button class="nav-btn active" onclick="showPage('tools', this)">30ツールリスト</button>
+    <button class="nav-btn" onclick="showPage('roadmap', this)">3ヶ月ロードマップ</button>
+  </nav>
+</header>
+
+<!-- PAGE: TOOLS -->
+<div class="page active" id="page-tools">
+  <div class="hero">
+    <div class="hero-eyebrow">MICRO SAAS / 30 TOOLS</div>
+    <h1 class="hero-title">個人・小規模事業者向け<br><em>マイクロSaaS 30選</em></h1>
+    <p class="hero-sub">1〜3日で開発可能。英語圏ユーザー向け。毎月払い続ける動機がある設計のみ。</p>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-n">30</div><div class="stat-l">ツール総数</div></div>
+      <div class="stat"><div class="stat-n">6</div><div class="stat-l">カテゴリ</div></div>
+      <div class="stat"><div class="stat-n">$9–29</div><div class="stat-l">価格帯/月</div></div>
+      <div class="stat"><div class="stat-n">1–3日</div><div class="stat-l">開発工数</div></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterTools('all',this)">すべて (30)</button>
+      <button class="filter-btn" onclick="filterTools('writing',this)">✍️ 文章・コンテンツ (7)</button>
+      <button class="filter-btn" onclick="filterTools('dev',this)">💻 開発者 (6)</button>
+      <button class="filter-btn" onclick="filterTools('biz',this)">💼 ビジネス (6)</button>
+      <button class="filter-btn" onclick="filterTools('marketing',this)">📣 マーケ・SNS (5)</button>
+      <button class="filter-btn" onclick="filterTools('finance',this)">💰 財務・経理 (3)</button>
+      <button class="filter-btn" onclick="filterTools('ops',this)">⚙️ 業務効率 (3)</button>
+    </div>
+    <div class="tool-grid" id="toolGrid"></div>
+  </div>
+</div>
+
+<!-- PAGE: ROADMAP -->
+<div class="page" id="page-roadmap">
+  <div class="hero">
+    <div class="hero-eyebrow">3-MONTH ROADMAP</div>
+    <h1 class="hero-title">月<em>¥500,000</em>達成<br>3ヶ月ロードマップ</h1>
+    <p class="hero-sub">平日1〜2h/日・費用ゼロスタート・英語圏ユーザー向け</p>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-n">$3,333</div><div class="stat-l">月目標MRR</div></div>
+      <div class="stat"><div class="stat-n">280人</div><div class="stat-l">必要ユーザー @$12</div></div>
+      <div class="stat"><div class="stat-n">66日</div><div class="stat-l">平日3ヶ月分</div></div>
+      <div class="stat"><div class="stat-n">1〜2h</div><div class="stat-l">稼働時間/日</div></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="rtabs">
+      <button class="rtab active" onclick="showRpane('scenario',this)">シナリオ</button>
+      <button class="rtab" onclick="showRpane('phases',this)">フェーズ別計画</button>
+      <button class="rtab" onclick="showRpane('platform',this)">販売プラットフォーム</button>
+      <button class="rtab" onclick="showRpane('channels',this)">獲得チャネル</button>
+      <button class="rtab" onclick="showRpane('retention',this)">継続率改善</button>
+      <button class="rtab" onclick="showRpane('next',this)">次のアクション</button>
+    </div>
+
+    <!-- SCENARIO -->
+    <div class="rpane active" id="rpane-scenario">
+      <div class="section">
+        <div class="section-label">3ヶ月後の着地予測</div>
+        <div class="section-title">シナリオ別MRR試算</div>
+        <div class="scenario-grid">
+          <div class="sc base">
+            <div class="sc-t" style="color:var(--text3)">悲観シナリオ</div>
+            <div class="sc-n" style="color:var(--text2)">$1,200</div>
+            <div class="sc-d" style="color:var(--text3)">PH掲載不発、SEO未浸透、ツール1本のみ</div>
+          </div>
+          <div class="sc real">
+            <div class="sc-t">現実的シナリオ</div>
+            <div class="sc-n">$2,000</div>
+            <div class="sc-d">PH普通掲載×2、ツール2本、Reddit流入あり</div>
+          </div>
+          <div class="sc opt">
+            <div class="sc-t">楽観シナリオ（¥50万達成）</div>
+            <div class="sc-n">$3,500</div>
+            <div class="sc-d">PH上位掲載×2〜3、ツール3本、SEO流入開始</div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-label">チャーン率と継続率の関係</div>
+        <div class="section-title">チャーン率が5%以下が前提条件</div>
+        <div class="churn-grid">
+          <div class="churn-row">
+            <div class="churn-lbl">月チャーン 3%</div>
+            <div class="churn-wrap"><div class="churn-bar" style="width:95%;background:rgba(16,185,129,0.25);color:var(--accent2)">3ヶ月後MRR維持率 91%（良好）</div></div>
+          </div>
+          <div class="churn-row">
+            <div class="churn-lbl">月チャーン 5%</div>
+            <div class="churn-wrap"><div class="churn-bar" style="width:75%;background:rgba(245,158,11,0.2);color:var(--accent3)">3ヶ月後MRR維持率 86%（許容範囲）</div></div>
+          </div>
+          <div class="churn-row">
+            <div class="churn-lbl">月チャーン 10%</div>
+            <div class="churn-wrap"><div class="churn-bar" style="width:45%;background:rgba(239,68,68,0.2);color:var(--accent4)">3ヶ月後MRR維持率 73%（要改善）</div></div>
+          </div>
+          <div class="churn-row">
+            <div class="churn-lbl">月チャーン 15%</div>
+            <div class="churn-wrap"><div class="churn-bar" style="width:22%;background:rgba(239,68,68,0.3);color:var(--accent4)">3ヶ月後MRR維持率 61%（危険水域）</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASES -->
+    <div class="rpane" id="rpane-phases">
+      <div class="phases" id="phaseList"></div>
+    </div>
+
+    <!-- PLATFORM -->
+    <div class="rpane" id="rpane-platform">
+      <div class="platform-cards" id="platList"></div>
+    </div>
+
+    <!-- CHANNELS -->
+    <div class="rpane" id="rpane-channels">
+      <div class="section">
+        <div class="section-label">1アクション当たりの期待獲得数（🟡業界観察ベース概算）</div>
+        <div class="section-title">チャネル別インパクト</div>
+        <div class="funnel">
+          <div class="funnel-row">
+            <div class="funnel-lbl">Product Hunt トップ5</div>
+            <div class="funnel-wrap"><div class="funnel-bar" style="width:90%;background:rgba(59,130,246,0.3);color:#93C5FD">30〜150人</div></div>
+            <div class="funnel-val">最大インパクト</div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-lbl">PH 通常掲載</div>
+            <div class="funnel-wrap"><div class="funnel-bar" style="width:55%;background:rgba(59,130,246,0.2);color:#93C5FD">10〜40人</div></div>
+            <div class="funnel-val">1回限り</div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-lbl">Hacker News Show HN</div>
+            <div class="funnel-wrap"><div class="funnel-bar" style="width:45%;background:rgba(16,185,129,0.2);color:#6EE7B7">5〜30人</div></div>
+            <div class="funnel-val">開発者ツールのみ</div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-lbl">Reddit 良質投稿</div>
+            <div class="funnel-wrap"><div class="funnel-bar" style="width:30%;background:rgba(16,185,129,0.15);color:#6EE7B7">3〜20人</div></div>
+            <div class="funnel-val">毎週継続可</div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-lbl">SEO記事1本（成熟後）</div>
+            <div class="funnel-wrap"><div class="funnel-bar" style="width:38%;background:rgba(139,92,246,0.2);color:#C4B5FD">月2〜15人/本</div></div>
+            <div class="funnel-val">複利型・遅効</div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">チャネル別攻略ガイド</div>
+        <div class="channel-grid" id="channelGrid"></div>
+      </div>
+    </div>
+
+    <!-- RETENTION -->
+    <div class="rpane" id="rpane-retention">
+      <div class="section">
+        <div class="section-title">継続率を上げる6つの施策</div>
+        <div class="ret-grid" id="retGrid"></div>
+      </div>
+    </div>
+
+    <!-- NEXT ACTIONS -->
+    <div class="rpane" id="rpane-next">
+      <div class="section">
+        <div class="section-label">CommitCraft ローンチまでの優先アクション</div>
+        <div class="section-title">次にやること、この順番で</div>
+        <div class="action-list" id="actionList"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>directorK / micro-saas strategy doc — generated 2026.05.13</footer>
+
+<script>
+// DATA
+const CAT = {
+  writing: { bg: 'rgba(59,130,246,0.12)', color: '#93C5FD', label: '✍️ 文章' },
+  dev:     { bg: 'rgba(16,185,129,0.12)', color: '#6EE7B7', label: '💻 開発者' },
+  biz:     { bg: 'rgba(139,92,246,0.12)', color: '#C4B5FD', label: '💼 ビジネス' },
+  marketing:{ bg: 'rgba(245,158,11,0.12)', color: '#FCD34D', label: '📣 マーケ' },
+  finance: { bg: 'rgba(20,184,166,0.12)', color: '#5EEAD4', label: '💰 財務' },
+  ops:     { bg: 'rgba(239,68,68,0.12)', color: '#FCA5A5', label: '⚙️ 業務効率' },
+};
+
+const TOOLS = [
+  {n:1,c:'writing',t:'Email subject line scorer',price:'$9/mo',days:'1日',
+   what:'件名を貼り付けると、開封率に影響する5指標（長さ・数字有無・パーソナライズ・緊急感・絵文字）をスコアリングし、改善案を3本出力する。',
+   why:'メール送信のたびに使う→高頻度ロック',ch:'Product Hunt・メールマーケ系Twitter'},
+  {n:2,c:'writing',t:'Meeting agenda generator',price:'$9/mo',days:'1日',
+   what:'「参加者・目的・時間」を入力すると、アジェンダの骨格・各議題の推奨持ち時間・ファシリテーション用の問いを自動生成する。',
+   why:'週次ミーティング=毎週使う習慣ツール',ch:'LinkedIn・Slackコミュニティ'},
+  {n:3,c:'writing',t:'Blog post readability scorer',price:'$12/mo',days:'1日',
+   what:'記事全文を貼り付けると、Flesch-Kincaidスコア・段落長・受動態率・読了時間を計測し、読みやすくするための具体的な書き換え箇所を指摘する。',
+   why:'SEOライターが毎投稿チェック=月20回以上利用',ch:'SEO系YouTubeコメ欄・Reddit r/blogging'},
+  {n:4,c:'writing',t:'Cold email personalization builder',price:'$19/mo',days:'2日',
+   what:'相手のWebサイトURLを入力すると、そのビジネスの強み・課題を推測し、「あなたの会社に固有」に見えるコールドメール冒頭3文を自動生成する。',
+   why:'1件送るたびに使う。返信率改善=ROI直結',ch:'Sales Hacker・Outreach系Slack'},
+  {n:5,c:'writing',t:'Job description bias scanner',price:'$19/mo',days:'1日',
+   what:'求人票を貼り付けると、ジェンダー・年齢・文化的に偏ったワードを検出し、より中立的な言い換え候補を並べて表示する。',
+   why:'採用のたびに使う。DEI義務化の流れで需要増',ch:'SHRM系コミュニティ・LinkedIn HR層'},
+  {n:6,c:'writing',t:'Newsletter subject line tester',price:'$9/mo',days:'1日',
+   what:'件名の候補を最大5本入力すると、好奇心・明確さ・緊急感・パーソナライズの4軸でスコア比較し、A/Bテスト向けのベスト2本を選ぶ理由を説明する。',
+   why:'毎週送るたびに使う→週次ロック習慣',ch:'Substack内クロスプロモ'},
+  {n:7,c:'writing',t:'Tone checker for Slack & email',price:'$9/mo',days:'1日',
+   what:'送信前のメッセージを貼り付けると「攻撃的・受動的・曖昧・適切」の4軸でトーンを判定し、相手に与える印象と書き換え案を提示する。',
+   why:'毎日送信前に使う。感情トラブル防止=価値明確',ch:'remote work系Reddit・Twitter'},
+  {n:8,c:'dev',t:'Git commit message generator ★',price:'$9/mo',days:'1日',
+   what:'git diffのテキストを貼り付けると、Conventional Commits形式（feat/fix/refactor/docs/chore等）のコミットメッセージを3パターン生成する。各メッセージにワンクリックコピーボタン付き。',
+   why:'毎コミット=1日5〜20回使う高頻度ツール',ch:'Hacker News Show HN・Dev.to'},
+  {n:9,c:'dev',t:'README generator',price:'$9/mo',days:'1日',
+   what:'ソースコードの主要ファイルを貼り付けると、概要・インストール手順・使い方・コントリビューションガイドを含むREADME.mdを自動生成する。',
+   why:'新リポ作成のたびに使う。OSSにも有効',ch:'GitHub Trending掲載狙い・Twitter #devtools'},
+  {n:10,c:'dev',t:'SQL query explainer',price:'$12/mo',days:'1日',
+   what:'SQLを貼り付けると、何のデータを・どの順番で・どんな条件で取得しているかをステップごとに平易な英語で解説する。JOINやサブクエリも対応。',
+   why:'DBAでない開発者・アナリストが毎日参照',ch:'Stack Overflow広告・Reddit r/SQL'},
+  {n:11,c:'dev',t:'Regex builder with live test',price:'$9/mo',days:'1日',
+   what:'「半角数字3桁のみ許可」などの自然言語で要件を書くと正規表現を生成し、テスト文字列に対してリアルタイムでマッチ結果をハイライト表示する。',
+   why:'正規表現は毎回ゼロから考える→時間削減価値大',ch:'regex101競合層へのSEO'},
+  {n:12,c:'dev',t:'API error humanizer',price:'$9/mo',days:'1日',
+   what:'APIのエラーレスポンス（JSON）を貼り付けると、エラーの原因を平易に説明し、最も可能性の高い修正コードのスニペットを提示する。',
+   why:'デバッグは毎日発生=繰り返し利用',ch:'VS Code拡張として無料配布→有料Web版へ誘導'},
+  {n:13,c:'dev',t:'.env ドキュメント自動生成',price:'$7/mo',days:'1日',
+   what:'.envファイルを貼り付けると、各環境変数の用途説明・型・デフォルト値・必須/任意の区別を表にした.env.exampleとREADMEセクションを生成する。',
+   why:'チーム共有・新メンバーオンボードのたびに使う',ch:'Dev.to記事でオーガニック流入'},
+  {n:14,c:'marketing',t:'LinkedIn post formatter',price:'$12/mo',days:'1日',
+   what:'書きたい内容を箇条書きで入力すると、フック文・改行・絵文字・CTA・ハッシュタグを含むLinkedInアルゴリズムに最適化された投稿文に変換する。',
+   why:'毎投稿で使う。週3投稿なら月12回',ch:'LinkedIn上でのデモ動画が最強チャネル'},
+  {n:15,c:'marketing',t:'X (Twitter) thread splitter',price:'$9/mo',days:'1日',
+   what:'長文のブログ記事や原稿を貼り付けると、1ツイート280文字以内に自動分割し、番号・つなぎの言葉・最終ツイートのCTAを付けてスレッド形式に整える。',
+   why:'長文コンテンツ保有者全員に刺さる',ch:'Twitter上のデモが自己宣伝になる'},
+  {n:16,c:'marketing',t:'Customer review response generator',price:'$12/mo',days:'1日',
+   what:'GoogleやYelp等のレビュー本文と星の数を入力すると、ブランドトーンに合わせた返信文を3パターン生成する。否定的レビューへの丁寧な対処文も含む。',
+   why:'Google Business出店者が毎日使う',ch:'Shopify App Store・Google Business系コミュニティ'},
+  {n:17,c:'marketing',t:'Ad copy A/B variation generator',price:'$19/mo',days:'1日',
+   what:'1本の広告コピーを入力すると、「感情訴求・論理訴求・恐怖訴求・社会的証明」の4軸でそれぞれ書き換えた計4〜5バリエーションを出力する。',
+   why:'Google/Meta広告運用者は毎週テストが業務',ch:'Google広告認定パートナーへのアフィリ提携'},
+  {n:18,c:'marketing',t:'YouTube SEO optimizer',price:'$12/mo',days:'1日',
+   what:'動画タイトルと概要文を入力すると、検索ボリュームを意識したタイトル案・説明文のSEO最適版・タグ30個・チャプター構成の提案を一括出力する。',
+   why:'動画投稿ごとに使う=投稿頻度に比例してLTV向上',ch:'YouTubeクリエイター向けニュースレター広告'},
+  {n:19,c:'biz',t:'Freelance proposal generator',price:'$19/mo',days:'2日',
+   what:'案件の概要・予算・納期を入力すると、課題の整理・自分のアプローチ・実績の引用箇所・価格提示・次のステップを含む提案書のドラフトを生成する。',
+   why:'提案書の品質がWin率に直結=ROI明確',ch:'Upwork/Fiverr コミュニティフォーラム'},
+  {n:20,c:'biz',t:'Invoice late-fee chase email kit',price:'$9/mo',days:'1日',
+   what:'請求書番号・未払い日数・金額を入力すると、「やんわり確認→毅然とした催促→法的措置示唆」の段階的な3通のチェイスメールを自動生成する。',
+   why:'未払いは毎月発生するフリーランサーの痛点',ch:'r/freelance・Bonsai競合SEO'},
+  {n:21,c:'biz',t:'SaaS pricing page copy generator',price:'$29/mo',days:'2日',
+   what:'プラン名・機能リスト・価格を入力すると、心理的価格設定の原則（アンカリング・最もお得プランの強調・機能の便益言語化）に基づいたプライシングページのコピーを生成する。',
+   why:'プライシング改善=直接収益増→高単価が正当化できる',ch:'Indie Hackers・MicroConf'},
+  {n:22,c:'biz',t:'One-page business case generator',price:'$19/mo',days:'2日',
+   what:'目的・必要なコスト・期待する効果・リスクをフォームで入力すると、上司や経営者に見せるためのA4一枚エグゼクティブサマリーをDoc形式で出力する。',
+   why:'社内決裁のたびに使う。企業担当者にも刺さる',ch:'LinkedIn B2B層ターゲット広告'},
+  {n:23,c:'biz',t:'NPS コメント分類・サマリツール',price:'$19/mo',days:'2日',
+   what:'NPS調査のオープンコメントをCSVで貼り付けると、ポジティブ/ネガティブ/機能要望の3カテゴリに自動分類し、頻出テーマのサマリと優先改善ポイントを出力する。',
+   why:'月次でNPS集計するSaaS企業が毎月使う',ch:'Typeform App Marketplace連携'},
+  {n:24,c:'biz',t:'Competitor feature comparison generator',price:'$19/mo',days:'2日',
+   what:'自社と競合他社のURLを入力すると、各サイトから機能・価格・ポジショニングを抽出し、比較表とSWOT形式のサマリを自動生成する。',
+   why:'競合調査は四半期ごとに発生=定期利用',ch:'Product Management系Slack/Discord'},
+  {n:25,c:'biz',t:'Product Hunt launch copy kit',price:'$19/mo',days:'2日',
+   what:'製品名・解決する課題・ターゲットユーザーを入力すると、Product Hunt掲載用のタグライン・詳細説明・ファーストコメント・Twitterアナウンス文を一括生成する。',
+   why:'ローンチ失敗コストが高い→高単価が受け入れられやすい',ch:'PH自体に掲載→自己紹介ツールとして機能'},
+  {n:26,c:'finance',t:'Freelance 90-day cashflow forecast',price:'$12/mo',days:'2日',
+   what:'毎月の確定収入・見込み案件・固定支出・変動支出を入力すると、3ヶ月分のキャッシュフロー予測グラフと「この月は資金が不足するリスクあり」というアラートを表示する。',
+   why:'入金タイミングを把握したい→毎月更新習慣',ch:'Bonsai・AND.co競合キーワードSEO'},
+  {n:27,c:'finance',t:'Bank CSV expense categorizer',price:'$9/mo',days:'2日',
+   what:'銀行やクレカの明細CSVをアップロードすると、各取引を「交通費・通信費・広告費・外注費」等の勘定科目に自動分類し、確定申告・帳簿用のCSVとして再エクスポートできる。',
+   why:'毎月の経費整理・確定申告前に必ず使う',ch:'r/personalfinance・TurboTax競合SEO'},
+  {n:28,c:'finance',t:'SaaS MRR calculator & growth simulator',price:'$9/mo',days:'1日',
+   what:'現在のMRR・月次チャーン率・新規獲得数を入力すると、12ヶ月先までのMRR推移グラフを表示し、「チャーンをX%下げた場合」「新規をY件増やした場合」のシナリオ比較ができる。',
+   why:'毎月数字を見る習慣化ツール=チャーン低',ch:'Indie Hackers掲載→自己プロモ'},
+  {n:29,c:'ops',t:'Weekly status report generator',price:'$9/mo',days:'1日',
+   what:'「今週やったこと・課題・来週の予定」を箇条書きで入力すると、上司やクライアントに送れる構造化されたステータスレポートのメール文面を生成する。',
+   why:'毎週金曜に使う=週次ロック',ch:'remote work系Twitter・Slack Communities'},
+  {n:30,c:'ops',t:'SOP（標準作業手順書）ドラフト生成',price:'$19/mo',days:'2日',
+   what:'業務の流れを箇条書きで入力すると、「目的・担当者・手順・例外処理・チェックリスト」を含むNotionまたはDocument形式の標準作業手順書のドラフトを生成する。',
+   why:'業務標準化・チーム拡大のたびに使う',ch:'Notion Template Gallery連携'},
+];
+
+const PHASES = [
+  {
+    n:1, title:'Month 1 — 基盤構築 + 第1弾ローンチ',
+    target:'目標: $300〜700 MRR',
+    color:'rgba(59,130,246,0.15)', tcolor:'#93C5FD',
+    weeks:[
+      {t:'Week 1（5〜7h）: ツール選定 + MVP開発', items:['最初の1本を決める。推奨: LinkedIn formatter または Git commit generator','Claude Codeで2日でMVP完成を目指す。機能は最小限（入力→出力のみ）','無料トライアル設計: 7日間クレカなし（転換率3〜5倍向上）']},
+      {t:'Week 2（5〜7h）: LP + 決済セットアップ', items:['独自ドメイン取得（$10〜12/年）','Lemon Squeezアカウント開設・プラン設定（$9/moと$19/moの2プラン）','LP作成: 問題→解決策→デモ→価格の4ブロック構成','Analytics設置（Plausible or Google Analytics）']},
+      {t:'Week 3（7〜10h）: Product Hunt準備', items:['PH専用資料作成: タグライン・説明・GIF・スクショ5枚','Hunterを探す（フォロワー1,000人以上のPHユーザー）または自己ハント','ローンチ当日の「First comment」を事前に準備','知人・コミュニティに事前連絡']},
+      {t:'Week 4（ローンチ週）: 発射 + Reddit', items:['PHローンチ（火〜木が競争少なめ。月曜はNG）','ローンチ当日: PH・HN・Reddit同時投稿','全コメントに24h以内に返信','フィードバック収集: 最初の10人に感想を聞く']},
+    ]
+  },
+  {
+    n:2, title:'Month 2 — 改善 + 第2弾ローンチ + SEO開始',
+    target:'目標: $1,000〜2,000 MRR',
+    color:'rgba(16,185,129,0.12)', tcolor:'#6EE7B7',
+    weeks:[
+      {t:'Week 5〜6（5〜7h/週）: ツール1の改善', items:['ローンチ後の離脱ポイントをAnalyticsで特定','解約理由をメールで全解約者に聞く（返信率20〜40%）','「使い始め3日以内に成果体験」を作る（onboarding改善）','週1本の比較記事SEO: 「[競合ツール] alternative」記事を書き始める']},
+      {t:'Week 7（5〜7h）: 第2ツール開発', items:['ツール1のユーザーが「次に欲しいもの」から選定','相乗効果が出るものを優先: 同じターゲット層','開発工数を1日に収める（Claude Codeで）','既存ユーザーにβ版先行公開→口コミ誘発']},
+      {t:'Week 8（5〜7h）: 第2ツールローンチ + バンドル', items:['PH第2弾ローンチ','「ツール1+2セット」バンドルプランを作る（$19/mo）: 単品より30%割安に設定','既存ユーザーへのアップグレード案内メール送信','年次プラン（2ヶ月分無料）を追加してLTV改善']},
+    ]
+  },
+  {
+    n:3, title:'Month 3 — 複利化 + スケール',
+    target:'目標: $2,500〜3,500 MRR',
+    color:'rgba(139,92,246,0.12)', tcolor:'#C4B5FD',
+    weeks:[
+      {t:'Week 9〜10（5〜7h/週）: SEO流入開始期', items:['Month 2に書いた記事がインデックスされ始める時期','検索流入をGA/Plausibleで確認し、上位表示キーワードに追記','Reddit定期投稿: 週1回「役立つ情報+ツール紹介」の流れを維持','メールリストへの月次ニュースレター送信']},
+      {t:'Week 11（5〜7h）: 第3ツール or アップセル強化', items:['ツール3本目の開発（既存ユーザーリクエスト最多のもの）','または: 既存2ツールに有料機能追加でアップグレード促進','アニュアルプラン比率を上げるプロモ（「今月末まで年額20%オフ」）']},
+      {t:'Week 12（3〜5h）: 計測・振り返り', items:['チャーン率確認（月次5%以下が目標）','NPS計測（Typeform無料版で可）','Month 4以降の優先チャネル決定（SEO継続 or PH第3弾 or 紹介プログラム）','年収換算のMRR進捗と次のマイルストーン設定']},
+    ]
+  },
+];
+
+const PLATFORMS = [
+  {name:'Lemon Squeezy', badge:'最推奨・主軸', badgeClass:'badge-rec', rec:true, rows:[
+    {l:'手数料', v:'5% + $0.50/件'},
+    {l:'最大の強み', v:'Merchant of Record（MoR）= 世界中のVAT・消費税をLemon Squeezが代わりに払う。自分で税務対応ゼロ。'},
+    {l:'サブスク', v:'月次・年次・無料トライアル・クーポンすべて標準機能'},
+    {l:'セットアップ', v:'半日。埋め込みチェックアウトURLを自前LPに貼るだけ'},
+  ]},
+  {name:'Product Hunt', badge:'ローンチ発射台', badgeClass:'badge-ok', rec:false, rows:[
+    {l:'役割', v:'販売サイトではなくDiscoveryプラットフォーム。掲載日の流入を最大化する発射台として使う。'},
+    {l:'効果', v:'トップ5掲載で500〜3,000 UV/日（🟡幅あり）'},
+    {l:'注意', v:'1ツールにつき1回のみ有効。失敗すると再掲載は厳しい。準備に1週間かける価値あり。'},
+  ]},
+  {name:'Reddit（r/SaaS・niche subs）', badge:'常時流入源', badgeClass:'badge-ok', rec:false, rows:[
+    {l:'推奨sub', v:'r/freelance（66万人）/ r/webdev（200万人）/ r/SaaS（13万人）/ r/Entrepreneur（300万人）'},
+    {l:'NGパターン', v:'宣伝投稿は即削除。「この問題で悩んでる人いる?」→ツール紹介の流れが正解。'},
+  ]},
+  {name:'Hacker News（Show HN）', badge:'開発者ツール専用', badgeClass:'badge-ok', rec:false, rows:[
+    {l:'役割', v:'「Show HN: I built a tool that...」で投稿。開発者向けツールに限定で有効。'},
+    {l:'効果', v:'フロントページ掲載で数百〜2,000 UV。コメントが活発で改善フィードバックも集まる。'},
+  ]},
+  {name:'AppSumo', badge:'非推奨', badgeClass:'badge-ng', rec:false, warn:true, rows:[
+    {l:'なぜ非推奨', v:'ライフタイムディール（一括払い）が主力。MRRが積み上がらない。サポート永続負荷が重い。'},
+  ]},
+  {name:'X（Twitter）', badge:'主力にしない', badgeClass:'badge-ng', rec:false, warn:true, rows:[
+    {l:'判断根拠', v:'2023年以降のアルゴリズム変更でリーチが大幅縮小。フォロワーゼロから有効な流入を得るには数ヶ月以上かかる。'},
+    {l:'使う場面', v:'Product Huntローンチ当日のアナウンスのみ。'},
+  ]},
+];
+
+const CHANNELS = [
+  {t:'Product Hunt 攻略チェックリスト', b:'ローンチ日: 火〜木（月曜は激戦）\n12:01 AM PST にスケジュール投稿\nHunter: フォロワー2,000+以上が理想\nGIF/動画: ツールの動作を15秒で見せる\nFirst comment: 作った理由を人間らしく書く\n48時間以内の全コメント返信\n1週間前から知人に「Notify me」登録依頼'},
+  {t:'Reddit 投稿テンプレート（成功パターン）', b:'タイトル: 「I\'ve been freelancing for X years and this one thing saved me 3hrs/week」\n\n本文: 問題の描写 → 解決策（ツールへの言及は控えめに）→ 「Feel free to DM me」\n\nNGパターン: 「Check out my tool!」で始まる投稿は即削除される'},
+  {t:'SEO記事の構成（1本30〜60分）', b:'Claudeで下書き生成（10分）\nタイトル: 「[競合名] Alternatives in 2025」\nH2: なぜ競合を使わなくなるか\nH2: 自ツールの比較表\nH2: 使い方 3ステップ\n内部リンク: LP + 他記事へ\n文字数: 800〜1,200字で十分'},
+  {t:'Hacker News Show HN テンプレート', b:'タイトル: 「Show HN: [ツール名] – [1行で何をするか]」\n\n本文: なぜ作ったか（既存ツールの不満）→ 技術的なアプローチ → デモURL\n\nポイント: 開発者が「面白い」と思う技術的な話を含める。「月$9です」は最後の1行だけ'},
+];
+
+const RETENTION = [
+  {t:'オンボーディング改善（最重要）', b:'ユーザー登録後3日以内に「最初の成果体験」を必ず作る。ウェルカムメールに「まず試してほしい1つのこと」を書く。チュートリアルではなく「実際の問題を解決する」フローにする。計測: Day3 retention rateを毎週記録'},
+  {t:'解約前メールの自動化', b:'Lemon Squeezのwebhookで「解約ボタン押下」検知 → 自動メール送信。メール内容: 「なぜ解約するか教えてください」の選択肢3つ + テキストボックス。「使い方がわからない」回答者には使い方動画を返信'},
+  {t:'年次プランへの誘導', b:'月次契約ユーザーへ「年次に切り替えで2ヶ月無料」を毎月メールで案内。年次ユーザーは月次比でチャーン率が大幅に低い。初期プロモ: 「最初の10人限定 年次30%オフ」でレビュー・口コミも収集'},
+  {t:'使用頻度の可視化', b:'「今月あなたは○回使い、○分節約しました」サマリをユーザーダッシュボードに表示。月次メールにも同じ数字を入れる（「$9払ってる価値」を再確認させる）。実装: API呼び出し回数をカウントするだけ。工数1日以下。'},
+  {t:'機能リクエストの可視化', b:'Canny（無料プラン有）でユーザーが機能投票できる公開ロードマップを設置。「あなたが投票した機能をリリースしました」メールはエンゲージメント率最高クラス。解約理由が「機能不足」の場合、このメールで解約を思いとどまらせられる'},
+  {t:'チャーン後のウィンバック', b:'解約後30日目に1通だけ「戻ってきてくれたら最初の月無料」メールを送る。ウィンバック率の業界平均は3〜5%（🟡一般的な数値）と低いが、コストゼロのため実施しない理由がない。Lemon Squeezのdiscountクーポンで自動化可能'},
+];
+
+const ACTIONS = [
+  {n:1, t:'Product HuntアカウントをWarm up', d:'毎日5〜10製品にアップボートかコメントをする。新規アカウントはアクティビティがないとローンチ当日の評価に影響する可能性あり。', meta:'毎日継続・2〜3日 / 1日15〜20分'},
+  {n:2, t:'HN Show HN + Reddit 投稿文を作成', d:'「Show HN: CommitCraft – Turn your git diff into perfect commit messages instantly」のHN投稿文と、r/webdev向けのReddit投稿文をClaudeと一緒に仕上げる。PHローンチ当日に同時投稿。', meta:'次セッションで実施 / 30〜60分'},
+  {n:3, t:'Product Huntローンチ実行', d:'Warm up完了後に実行。タグライン・説明文・GIF・First commentはすでに準備済み。火〜木の12:01 AM PSTに投稿スケジュール。', meta:'2〜3日後 / ローンチ日は全コメント返信対応'},
+  {n:4, t:'SEO記事1本目を公開', d:'「conventional commits generator」「git commit message ai」などのキーワードで記事を1本書く。Claudeで下書き30分→30分編集→Vercel上のブログまたはdev.toに公開。Googleのインデックスを1日でも早く開始する。', meta:'ローンチ翌日 / 60〜90分'},
+  {n:5, t:'GitHubリポジトリREADME最適化', d:'commitcraftのREADMEにツールへのリンク・使い方・スクリーンショットを追加。開発者がGitHubで見つけたときの導線を作る。', meta:'ローンチ後1週間以内 / 30分'},
+];
+
+// RENDER TOOLS
+let currentCat = 'all';
+function renderTools() {
+  const grid = document.getElementById('toolGrid');
+  const list = currentCat === 'all' ? TOOLS : TOOLS.filter(t => t.c === currentCat);
+  grid.innerHTML = list.map((t, i) => {
+    const cc = CAT[t.c];
+    return `<div class="tool-card" id="tc${t.n}" onclick="toggleTool(${t.n})">
+      <div class="tool-head">
+        <span class="tool-num">${t.n}</span>
+        <div class="tool-body2">
+          <div style="display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;margin-bottom:6px">
+            <span class="tool-title">${t.t}</span>
+            <span class="cat-tag" style="background:${cc.bg};color:${cc.color}">${cc.label}</span>
+          </div>
+          <div class="tool-what">${t.what}</div>
+        </div>
+      </div>
+      <div class="tool-detail">
+        <div class="detail-row"><span class="detail-lbl">価格</span><span class="detail-val price-tag">${t.price}</span></div>
+        <div class="detail-row"><span class="detail-lbl">開発工数</span><span class="detail-val">${t.days}</span></div>
+        <div class="detail-row"><span class="detail-lbl">継続理由</span><span class="detail-val">${t.why}</span></div>
+        <div class="detail-row"><span class="detail-lbl">獲得Ch</span><span class="detail-val">${t.ch}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function toggleTool(n) {
+  const el = document.getElementById('tc' + n);
+  if (el) el.classList.toggle('open');
+}
+function filterTools(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTools();
+}
+
+// RENDER PHASES
+function renderPhases() {
+  const list = document.getElementById('phaseList');
+  list.innerHTML = PHASES.map(p => `
+    <div class="phase" id="ph${p.n}">
+      <div class="phase-header" onclick="togglePhase(${p.n})">
+        <div class="phase-num" style="background:${p.color};color:${p.tcolor}">${p.n}</div>
+        <div class="phase-title">${p.title}</div>
+        <span class="phase-target" style="background:${p.color};color:${p.tcolor}">${p.target}</span>
+        <span class="phase-arrow">▼</span>
+      </div>
+      <div class="phase-body">
+        <div class="week-grid">
+          ${p.weeks.map(w => `
+            <div class="week">
+              <div class="week-title">${w.t}</div>
+              <div class="week-items">${w.items.map(i => `<span>${i}</span>`).join('')}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+function togglePhase(n) {
+  document.getElementById('ph' + n).classList.toggle('open');
+}
+
+// RENDER PLATFORMS
+function renderPlatforms() {
+  const list = document.getElementById('platList');
+  list.innerHTML = PLATFORMS.map(p => `
+    <div class="plat ${p.rec ? 'recommend' : ''} ${p.warn ? 'warn' : ''}">
+      <div class="plat-head">
+        <span class="plat-name">${p.name}</span>
+        <span class="plat-badge ${p.badgeClass}">${p.badge}</span>
+      </div>
+      ${p.rows.map(r => `<div class="plat-row"><span class="plat-lbl">${r.l}</span><span class="plat-val">${r.v}</span></div>`).join('')}
+    </div>
+  `).join('');
+}
+
+// RENDER CHANNELS
+function renderChannels() {
+  const grid = document.getElementById('channelGrid');
+  grid.innerHTML = CHANNELS.map(c => `
+    <div class="ch-card">
+      <div class="ch-title">${c.t}</div>
+      <div class="ch-body">${c.b.replace(/\n/g, '<br>')}</div>
+    </div>
+  `).join('');
+}
+
+// RENDER RETENTION
+function renderRetention() {
+  const grid = document.getElementById('retGrid');
+  grid.innerHTML = RETENTION.map(r => `
+    <div class="ret-card">
+      <div class="ret-title">${r.t}</div>
+      <div class="ret-body">${r.b}</div>
+    </div>
+  `).join('');
+}
+
+// RENDER ACTIONS
+function renderActions() {
+  const list = document.getElementById('actionList');
+  list.innerHTML = ACTIONS.map(a => `
+    <div class="action">
+      <div class="action-num">${a.n}</div>
+      <div class="action-content">
+        <div class="action-title">${a.t}</div>
+        <div class="action-desc">${a.d}</div>
+        <div class="action-meta">${a.meta}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// PAGE SWITCH
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// RPANE SWITCH
+function showRpane(id, btn) {
+  document.querySelectorAll('.rpane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.rtab').forEach(b => b.classList.remove('active'));
+  document.getElementById('rpane-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// INIT
+renderTools();
+renderPhases();
+renderPlatforms();
+renderChannels();
+renderRetention();
+renderActions();
+</script>
+</body>
+</html>
