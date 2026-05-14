@@ -21,6 +21,7 @@ LOCAL_PJ_LINKS = {
     '③ SNS発信・コンテンツ':     'pj3.html',
     '④ 海外販売':                 'pj4.html',
     '⑤ 個人開発':                 'pj5.html',
+    '⑥ 小型ツールマネタイズ':     'pj6.html',  # ← 追加
 }
 
 # ── Shared CSS ───────────────────────────────────────────────────
@@ -438,11 +439,14 @@ def _index_nav():
   <a href="pj3.html">③ SNS発信</a>
   <a href="pj4.html">④ 海外販売</a>
   <a href="pj5.html">⑤ 個人開発</a>
+  <a href="pj6.html">⑥ 小型ツール</a>
 </nav>'''
 
 def _detail_nav(active=''):
     links = [('index.html','← ダッシュボード',''),('pj2.html','② ディレクターK','pj2'),
-             ('pj3.html','③ SNS発信','pj3'),('pj4.html','④ 海外販売','pj4'),('pj5.html','⑤ 個人開発','pj5')]
+             ('pj3.html','③ SNS発信','pj3'),('pj4.html','④ 海外販売','pj4'),
+             ('pj5.html','⑤ 個人開発','pj5'),
+             ('pj6.html','⑥ 小型ツール','pj6')]  # ← 追加
     return '<nav>' + ''.join(f'<a href="{h}"{" class=active" if k==active else ""}>{l}</a>' for h,l,k in links) + '</nav>'
 
 def _find_pj(records, num):
@@ -618,6 +622,27 @@ def build_pj5(pj_records):
   </div>
 </div></body></html>'''
 
+# ── pj6.html ─────────────────────────────────────────────────────
+
+def build_pj6(pj_records):
+    rec = _find_pj(pj_records, '⑥')
+    now = datetime.now(JST).strftime('%Y-%m-%d %H:%M JST')
+    if not rec: return _error_page('⑥ 小型ツールマネタイズ', 'pj6', now)
+    p = rec['properties']
+    return f'''<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>⑥ 小型ツールマネタイズ | Hiro PROJECT</title>{_fonts()}<style>{_CSS}</style></head><body>
+<header><div class="logo">HIRO / ⑥ 小型ツールマネタイズ</div><div class="meta">最終更新: {now}</div></header>
+{_detail_nav('pj6')}
+<div class="grid">
+  <div class="card full"><div class="card-title">📈 KPI</div><div class="kpi-row-container">{_kpi_cards(rec)}</div></div>
+  <div class="card full"><div class="card-title">🗂️ PJ 詳細</div>
+    {_row("現フェーズ",     prop_val(p.get('現フェーズ',{})))}
+    {_row("次にやること",   prop_val(p.get('次フェーズ・次にやること',{})))}
+    {_row("主要メトリクス", prop_val(p.get('主要メトリクス',{})))}
+    {_row("課題・リスク",   prop_val(p.get('課題・リスク',{})))}
+  </div>
+</div></body></html>'''
+
 # ── Main ────────────────────────────────────────────────────────
 
 def main():
@@ -633,12 +658,13 @@ def main():
     pipeline = query_database(PIPELINE_DB_ID)
     print(f'  → {len(pipeline)} records')
 
-    outputs = [
+outputs = [
         ('index.html', build(blocks, pj, pipeline)),
         ('pj2.html',   build_pj2(pj, pipeline)),
         ('pj3.html',   build_pj3(pj)),
         ('pj4.html',   build_pj4(pj)),
         ('pj5.html',   build_pj5(pj)),
+        ('pj6.html',   build_pj6(pj)),  # ← 追加
     ]
 
     for filename, html in outputs:
