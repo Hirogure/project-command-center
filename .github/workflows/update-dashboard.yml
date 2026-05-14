@@ -32,6 +32,6 @@ jobs:
         run: |
           git config user.name  'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add -f index.html pj2.html pj3.html pj4.html pj5.html
+          git add -f index.html pj2.html pj3.html pj4.html pj5.html pj6.html
           git commit -m "🔄 dashboard $(date -u +'%Y-%m-%d %H:%M UTC')" || echo "nothing to commit"
           git push || echo "nothing to push"

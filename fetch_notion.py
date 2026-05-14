@@ -658,19 +658,23 @@ def main():
     pipeline = query_database(PIPELINE_DB_ID)
     print(f'  → {len(pipeline)} records')
 
-outputs = [
-        ('index.html', build(blocks, pj, pipeline)),
-        ('pj2.html',   build_pj2(pj, pipeline)),
-        ('pj3.html',   build_pj3(pj)),
-        ('pj4.html',   build_pj4(pj)),
-        ('pj5.html',   build_pj5(pj)),
-        ('pj6.html',   build_pj6(pj)),  # ← 追加
+    outputs = [
+        ('index.html', lambda: build(blocks, pj, pipeline)),
+        ('pj2.html',   lambda: build_pj2(pj, pipeline)),
+        ('pj3.html',   lambda: build_pj3(pj)),
+        ('pj4.html',   lambda: build_pj4(pj)),
+        ('pj5.html',   lambda: build_pj5(pj)),
+        ('pj6.html',   lambda: build_pj6(pj)),
     ]
 
-    for filename, html in outputs:
-        with open(filename, 'w', encoding='utf-8') as f:
-            f.write(html)
-        print(f'  → {filename} ({len(html):,} bytes)')
+    for filename, builder in outputs:
+        try:
+            html = builder()
+            with open(filename, 'w', encoding='utf-8') as f:
+                f.write(html)
+            print(f'  → {filename} ({len(html):,} bytes)')
+        except Exception as e:
+            print(f'  [ERROR] {filename}: {e}')
 
     print('Done.')
 
