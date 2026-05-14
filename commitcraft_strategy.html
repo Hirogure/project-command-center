@@ -580,7 +580,7 @@
   </div>
 </div>
 
-<footer>directorK / micro-saas strategy doc — generated 2026.05.13</footer>
+<footer>directorK / micro-saas strategy doc — generated 2026.05.13 / updated 2026.05.15</footer>
 
 <script>
 // DATA
@@ -751,9 +751,11 @@ const PLATFORMS = [
 
 const CHANNELS = [
   {t:'Product Hunt 攻略チェックリスト', b:'ローンチ日: 火〜木（月曜は激戦）\n12:01 AM PST にスケジュール投稿\nHunter: フォロワー2,000+以上が理想\nGIF/動画: ツールの動作を15秒で見せる\nFirst comment: 作った理由を人間らしく書く\n48時間以内の全コメント返信\n1週間前から知人に「Notify me」登録依頼'},
-  {t:'Reddit 投稿テンプレート（成功パターン）', b:'タイトル: 「I\'ve been freelancing for X years and this one thing saved me 3hrs/week」\n\n本文: 問題の描写 → 解決策（ツールへの言及は控えめに）→ 「Feel free to DM me」\n\nNGパターン: 「Check out my tool!」で始まる投稿は即削除される'},
-  {t:'SEO記事の構成（1本30〜60分）', b:'Claudeで下書き生成（10分）\nタイトル: 「[競合名] Alternatives in 2025」\nH2: なぜ競合を使わなくなるか\nH2: 自ツールの比較表\nH2: 使い方 3ステップ\n内部リンク: LP + 他記事へ\n文字数: 800〜1,200字で十分'},
   {t:'Hacker News Show HN テンプレート', b:'タイトル: 「Show HN: [ツール名] – [1行で何をするか]」\n\n本文: なぜ作ったか（既存ツールの不満）→ 技術的なアプローチ → デモURL\n\nポイント: 開発者が「面白い」と思う技術的な話を含める。「月$9です」は最後の1行だけ'},
+  {t:'Reddit 投稿テンプレート（成功パターン）', b:'タイトル: 「I\'ve been freelancing for X years and this one thing saved me 3hrs/week」\n\n本文: 問題の描写 → 解決策（ツールへの言及は控えめに）→ 「Feel free to DM me」\n\nNGパターン: 「Check out my tool!」で始まる投稿は即削除される'},
+  {t:'README最適化 攻略チェックリスト', b:'対象リポジトリ: commitcraft（GitHub）\n✅ 2026-05-14 完了済み\n\n記載内容: ツールへのリンク・使い方・スクリーンショット・デモGIF\n目的: 開発者がGitHubで見つけたときの導線作り\nコスト0・一度書けば永続的に流入\n狙いキーワード: 「git commit message generator」「conventional commits tool」'},
+  {t:'Indie Hackers 攻略チェックリスト', b:'アカウント: @hirogure（✅作成済み）\nCommitCraft登録: ✅完了済み\n投稿文: PHローンチ当日に投稿予定\n\nポイント: マイクロSaaS作り手の話を聞く文化あり。PHバッジなしでも受け入れられやすい。\n「なぜ作ったか」ストーリーが最も反応を得やすい'},
+  {t:'SEO記事の構成（1本30〜60分）', b:'Claudeで下書き生成（10分）\nタイトル: 「[競合名] Alternatives in 2025」\nH2: なぜ競合を使わなくなるか\nH2: 自ツールの比較表\nH2: 使い方 3ステップ\n内部リンク: LP + 他記事へ\n文字数: 800〜1,200字で十分'},
 ];
 
 const RETENTION = [
@@ -766,11 +768,11 @@ const RETENTION = [
 ];
 
 const ACTIONS = [
-  {n:1, t:'Product HuntアカウントをWarm up', d:'毎日5〜10製品にアップボートかコメントをする。新規アカウントはアクティビティがないとローンチ当日の評価に影響する可能性あり。', meta:'毎日継続・2〜3日 / 1日15〜20分'},
-  {n:2, t:'HN Show HN + Reddit 投稿文を作成', d:'「Show HN: CommitCraft – Turn your git diff into perfect commit messages instantly」のHN投稿文と、r/webdev向けのReddit投稿文をClaudeと一緒に仕上げる。PHローンチ当日に同時投稿。', meta:'次セッションで実施 / 30〜60分'},
-  {n:3, t:'Product Huntローンチ実行', d:'Warm up完了後に実行。タグライン・説明文・GIF・First commentはすでに準備済み。火〜木の12:01 AM PSTに投稿スケジュール。', meta:'2〜3日後 / ローンチ日は全コメント返信対応'},
-  {n:4, t:'SEO記事1本目を公開', d:'「conventional commits generator」「git commit message ai」などのキーワードで記事を1本書く。Claudeで下書き30分→30分編集→Vercel上のブログまたはdev.toに公開。Googleのインデックスを1日でも早く開始する。', meta:'ローンチ翌日 / 60〜90分'},
-  {n:5, t:'GitHubリポジトリREADME最適化', d:'commitcraftのREADMEにツールへのリンク・使い方・スクリーンショットを追加。開発者がGitHubで見つけたときの導線を作る。', meta:'ローンチ後1週間以内 / 30分'},
+  {n:1, t:'✅ PHウォームアップ継続中', d:'毎日5〜10製品にアップボートかコメントをする。PHローンチ実行まで毎日継続。新規アカウントはアクティビティがないとローンチ当日の評価に影響する可能性あり。', meta:'毎日継続 / PHローンチ実行まで'},
+  {n:2, t:'✅ HN・IH・Reddit 投稿文確定済み', d:'HN Show HN投稿文・IH投稿文・Reddit投稿文（r/webdev・r/SideProject・r/devtools）3本すべて確定。GitHub README最適化も完了。PHローンチ当日にHN・IH・Reddit・Xへ同時投稿予定。', meta:'完了 2026-05-14'},
+  {n:3, t:'Redditカルマ積み（毎日継続）', d:'毎日2件コメント投稿。自分のツール言及禁止。r/webdev等で有益なコメントを積み上げ、BANリスクを下げてからReddit投稿文を投下する。目安〜05-28まで継続。', meta:'毎日継続 / 〜2026-05-28目安'},
+  {n:4, t:'PHローンチ実行', d:'Warm up完了後に実行。タグライン・説明文・GIF・First commentはすでに準備済み。火〜木の12:01 AM PSTに投稿スケジュール。ローンチ当日はHN・IH・Reddit・Xへの同時投稿も行う。', meta:'ウォームアップ完了後 / ローンチ日は全コメント返信対応'},
+  {n:5, t:'SEO記事1本目を公開', d:'「conventional commits generator」「git commit message ai」などのキーワードで記事を1本書く。Claudeで下書き30分→30分編集→Vercel上のブログまたはdev.toに公開。Googleのインデックスを1日でも早く開始する。', meta:'PHローンチ翌日 / 60〜90分'},
 ];
 
 // RENDER TOOLS
